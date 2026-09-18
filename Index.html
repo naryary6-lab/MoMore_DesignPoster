@@ -1,1 +1,510 @@
+                        <div class="grid grid-cols-3 gap-2">
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-1">ពណ៌អក្សរ</label>
+                                <input type="color" id="text-color-fill" value="#ffffff" onchange="renderPoster()" class="w-full h-8 rounded bg-slate-800 border border-slate-700">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-1">ពណ៌គែម (Stroke)</label>
+                                <input type="color" id="text-color-stroke" value="#991b1b" onchange="renderPoster()" class="w-full h-8 rounded bg-slate-800 border border-slate-700">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-400 block mb-1">ពណ៌ស្រមោល 3D</label>
+                                <input type="color" id="text-color-shadow" value="#450a0a" onchange="renderPoster()" class="w-full h-8 rounded bg-slate-800 border border-slate-700">
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+
+                <!-- TAB 3: Badges, Feature Icons & Floating Doodles -->
+                <div id="tab-elements" class="space-y-5 hidden">
+                    
+                    <!-- Price Tag Badge Settings -->
+                    <div class="space-y-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-400 block">កំណត់ផ្លាកតម្លៃ (Price & Offer Badge)</span>
+                        <div>
+                            <label class="text-[11px] text-slate-400 block mb-1">អក្សរលើផ្លាកតម្លៃ ( top text )</label>
+                            <input type="text" id="input-price-label" value="ត្រឹមតែ" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-slate-400 block mb-1">លេខតម្លៃ ( Price Number )</label>
+                            <input type="text" id="input-price-val" value="10,000" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 font-bold">
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-slate-400 block mb-1">ររូបិយវត្ថុ ( Currency )</label>
+                            <input type="text" id="input-price-unit" value="រៀល" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                        </div>
+                    </div>
+
+                    <!-- Feature Bullet Icons ( គុណភាពល្អ | ស្រស់ស្អាត | តម្លៃសមរម្យ ) -->
+                    <div class="space-y-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-emerald-400 block">កំណត់ Feature Badges ( គុណភាព/អាយខន )</span>
+                        <div class="space-y-2">
+                            <input type="text" id="input-feat-1" value="🍲 គុណភាពល្អ" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                            <input type="text" id="input-feat-2" value="🌱 ស្រស់ស្អាត" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                            <input type="text" id="input-feat-3" value="❤️ តម្លៃសមរម្យ" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- TAB 4: Footer Bar & E-Commerce Supermarket Logos -->
+                <div id="tab-footer" class="space-y-5 hidden">
+                    
+                    <!-- E-Commerce Logos Toggle -->
+                    <div class="space-y-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-amber-400 block">បង្ហាញ Logo ផ្សារ & App ទិញទំនិញ (Availability Bar)</span>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <label class="flex items-center gap-2 p-2 bg-slate-800 rounded-lg cursor-pointer">
+                                <input type="checkbox" id="show-shopee" checked onchange="renderPoster()" class="accent-amber-500">
+                                <span>Shopee / Lazada</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-800 rounded-lg cursor-pointer">
+                                <input type="checkbox" id="show-tiktok" checked onchange="renderPoster()" class="accent-amber-500">
+                                <span>TikTok Shop</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-800 rounded-lg cursor-pointer">
+                                <input type="checkbox" id="show-supermarkets" checked onchange="renderPoster()" class="accent-amber-500">
+                                <span>Supermarket Logos</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 bg-slate-800 rounded-lg cursor-pointer">
+                                <input type="checkbox" id="show-social-bar" checked onchange="renderPoster()" class="accent-amber-500">
+                                <span>FB / Telegram Bar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Contact details -->
+                    <div class="space-y-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                        <span class="text-xs font-bold text-slate-300 block">ព័ត៌មានទំនាក់ទំនង Footer</span>
+                        <input type="text" id="input-phone" value="088 929 9948" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                        <input type="text" id="input-telegram" value="Telegram: @mybrand2026" oninput="renderPoster()" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100">
+                    </div>
+
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Right Live Preview Workspace -->
+        <main class="flex-1 bg-slate-950 flex flex-col items-center justify-center p-6 relative overflow-auto">
+            
+            <!-- Live Canvas Status Info -->
+            <div class="absolute top-4 right-6 bg-slate-900/90 backdrop-blur border border-slate-800 px-3 py-1.5 rounded-full text-xs text-slate-400 flex items-center gap-3 z-10">
+                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Dynamic Canvas Render</span>
+                <span class="text-slate-700">|</span>
+                <span id="canvas-dimensions-label">1080 x 1080 px</span>
+            </div>
+
+            <!-- POSTER CONTAINER VIEWPORT -->
+            <div id="poster-viewport" class="relative transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between select-none" style="width: 520px; height: 520px;">
+                
+                <!-- Background Layer -->
+                <div id="poster-bg" class="absolute inset-0 z-0 bg-gradient-to-b from-red-800 via-amber-950 to-slate-950">
+                    
+                    <!-- Decorative Radial Glow Overlay -->
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-transparent to-transparent"></div>
+                    
+                    <!-- Modern Arc Wave Background Shape (Toggled by style) -->
+                    <div id="arc-wave-bg" class="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-orange-500 to-amber-400 rounded-t-[100%] transform scale-x-125 hidden opacity-90"></div>
+
+                    <!-- Splatter Brush Texture background overlay -->
+                    <div id="brush-splash-bg" class="absolute top-6 left-1/2 -translate-x-1/2 w-[90%] h-24 brush-banner-yellow transform -rotate-2 border-2 border-amber-300 shadow-xl"></div>
+                </div>
+
+                <!-- Poster Content Container -->
+                <div class="relative z-10 w-full h-full flex flex-col justify-between p-5">
+
+                    <!-- TOP SECTION: Speech Bubble & 3D Typography Header -->
+                    <div class="text-center space-y-1 relative">
+                        
+                        <!-- Floating Cartoon Speech Bubble -->
+                        <div id="speech-bubble-el" class="speech-bubble px-4 py-1 text-xs font-bold inline-block transform -rotate-6 shadow-lg mb-1">
+                            <span id="render-bubble-text">ឆ្ងាញ់ណាស់! 👍</span>
+                        </div>
+
+                        <!-- 3D Header Typography Engine -->
+                        <div class="py-1">
+                            <h1 id="render-head-1" class="font-moul text-4xl text-white text-3d-bevel-red tracking-wide">
+                                ឆាក្រអប់សាច់គោ
+                            </h1>
+                            <h2 id="render-head-2" class="font-battambang font-bold text-xl text-yellow-300 drop-shadow-md mt-1">
+                                រសជាតិដើម ឈ្ងុយឆ្ងាញ់
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- MIDDLE SECTION: Food Dish / Product & Floating Price Badge -->
+                    <div class="flex-1 flex items-center justify-center relative my-2">
+                        
+                        <!-- Floating Food Dish Render Representation -->
+                        <div id="food-display-wrapper" class="relative z-10 flex items-center justify-center">
+                            
+                            <!-- Default Dish Illustration Vector -->
+                            <div class="relative flex flex-col items-center">
+                                <svg width="260" height="220" viewBox="0 0 300 250" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter drop-shadow-2xl">
+                                    <!-- Dish Plate -->
+                                    <ellipse cx="150" cy="140" rx="130" ry="75" fill="#ffffff" stroke="#e2e8f0" stroke-width="6"/>
+                                    <ellipse cx="150" cy="140" rx="110" ry="60" fill="#f8fafc"/>
+                                    
+                                    <!-- Rice & Food Dish -->
+                                    <ellipse cx="190" cy="130" rx="45" ry="30" fill="#fef08a"/>
+                                    <ellipse cx="120" cy="145" rx="55" ry="35" fill="#78350f"/>
+                                    
+                                    <!-- Fried Egg -->
+                                    <ellipse cx="195" cy="125" rx="20" ry="14" fill="#ffffff"/>
+                                    <circle cx="195" cy="125" r="8" fill="#f97316"/>
+                                    
+                                    <!-- Vegetables / Chili -->
+                                    <circle cx="110" cy="140" r="4" fill="#dc2626"/>
+                                    <circle cx="130" cy="150" r="3" fill="#16a34a"/>
+                                    <circle cx="140" cy="135" r="4" fill="#dc2626"/>
+
+                                    <!-- Fork & Spoon Doodles -->
+                                    <g transform="translate(220, 40) rotate(20)">
+                                        <rect x="0" y="0" width="6" height="70" rx="3" fill="#94a3b8"/>
+                                        <path d="M-6 0 L12 0 L12 20 L-6 20 Z" fill="#94a3b8"/>
+                                    </g>
+                                </svg>
+                            </div>
+
+                        </div>
+
+                        <!-- Price Tag Badge Floating (Red Paint Splatter Badge) -->
+                        <div id="floating-price-badge" class="absolute top-2 left-2 z-20 bg-gradient-to-tr from-red-600 to-red-700 text-white p-3 rounded-full shadow-2xl border-4 border-yellow-300 transform -rotate-12 flex flex-col items-center justify-center w-28 h-28 text-center">
+                            <span id="render-price-label" class="text-[10px] uppercase font-bold text-yellow-200">ត្រឹមតែ</span>
+                            <span id="render-price-val" class="font-koulen text-2xl text-yellow-300 leading-none my-0.5">10,000</span>
+                            <span id="render-price-unit" class="text-xs font-bold text-white">រៀល</span>
+                        </div>
+
+                    </div>
+
+                    <!-- BOTTOM SECTION: Feature Icons & Availability Logos -->
+                    <div class="space-y-2 relative z-10">
+                        
+                        <!-- Feature Bullets ( គុណភាពល្អ | ស្រស់ស្អាត | តម្លៃសមរម្យ ) -->
+                        <div id="feature-bullets-bar" class="flex items-center justify-center gap-2 bg-slate-900/80 backdrop-blur py-1.5 px-3 rounded-full border border-amber-400/30 text-[11px] font-bold text-amber-300">
+                            <span id="render-feat-1">🍲 គុណភាពល្អ</span>
+                            <span class="text-slate-600">|</span>
+                            <span id="render-feat-2">🌱 ស្រស់ស្អាត</span>
+                            <span class="text-slate-600">|</span>
+                            <span id="render-feat-3">❤️ តម្លៃសមរម្យ</span>
+                        </div>
+
+                        <!-- E-Commerce & Availability Footer Bar -->
+                        <div id="footer-availability-bar" class="bg-slate-950/90 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+                            
+                            <!-- E-commerce badges -->
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] text-slate-400 font-bold uppercase">មានលក់លើ:</span>
+                                <div class="flex items-center gap-1.5">
+                                    <span id="badge-shopee" class="bg-orange-600 text-white px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
+                                        <i class="fa-solid fa-bag-shopping"></i> Shopee
+                                    </span>
+                                    <span id="badge-tiktok" class="bg-slate-800 text-white px-2 py-0.5 rounded font-bold text-[10px] border border-slate-700 flex items-center gap-1">
+                                        <i class="fa-brands fa-tiktok"></i> TikTok
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Phone / Telegram info -->
+                            <div class="text-right">
+                                <div id="render-phone" class="font-bold text-amber-400 text-xs">📞 088 929 9948</div>
+                                <div id="render-telegram" class="text-[9px] text-slate-400">Telegram: @mybrand2026</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Hidden Export Canvas -->
+    <canvas id="export-canvas" class="hidden"></canvas>
+
+    <script>
+        // App State Management
+        const state = {
+            aspectRatio: '1:1',
+            presetStyle: 'street-food',
+            head1: 'ឆាក្រអប់សាច់គោ',
+            head2: 'រសជាតិដើម ឈ្ងុយឆ្ងាញ់',
+            bubbleText: 'ឆ្ងាញ់ណាស់! 👍',
+            font1: 'font-moul',
+            fontSize1: 44,
+            priceLabel: 'ត្រឹមតែ',
+            priceVal: '10,000',
+            priceUnit: 'រៀល',
+            feat1: '🍲 គុណភាពល្អ',
+            feat2: '🌱 ស្រស់ស្អាត',
+            feat3: '❤️ តម្លៃសមរម្យ',
+            phone: '📞 088 929 9948',
+            telegram: 'Telegram: @mybrand2026',
+            bgColor1: '#991b1b',
+            bgColor2: '#450a0a',
+            textColorFill: '#ffffff',
+            textColorStroke: '#991b1b',
+            textColorShadow: '#450a0a',
+            showShopee: true,
+            showTiktok: true,
+            showSupermarkets: true,
+            showSocialBar: true
+        };
+
+        window.onload = function() {
+            renderPoster();
+        };
+
+        function switchTab(tabName) {
+            ['style', 'text', 'elements', 'footer'].forEach(t => {
+                const contentEl = document.getElementById(`tab-${t}`);
+                const btnEl = document.getElementById(`tab-btn-${t}`);
+                if (t === tabName) {
+                    contentEl.classList.remove('hidden');
+                    btnEl.classList.add('text-amber-400', 'border-amber-400');
+                    btnEl.classList.remove('text-slate-400', 'border-transparent');
+                } else {
+                    contentEl.classList.add('hidden');
+                    btnEl.classList.remove('text-amber-400', 'border-amber-400');
+                    btnEl.classList.add('text-slate-400', 'border-transparent');
+                }
+            });
+        }
+
+        function setAspectRatio(ratio) {
+            state.aspectRatio = ratio;
+            const viewport = document.getElementById('poster-viewport');
+            const dimLabel = document.getElementById('canvas-dimensions-label');
+            
+            ['1:1', '4:5', '9:16'].forEach(r => {
+                const btn = document.getElementById(`ratio-${r}`);
+                if (r === ratio) {
+                    btn.className = 'px-3 py-1.5 rounded-lg transition-all bg-amber-500 text-slate-950 font-bold';
+                } else {
+                    btn.className = 'px-3 py-1.5 rounded-lg transition-all text-slate-300 hover:text-white';
+                }
+            });
+
+            if (ratio === '1:1') {
+                viewport.style.width = '520px';
+                viewport.style.height = '520px';
+                dimLabel.innerText = '1080 x 1080 px';
+            } else if (ratio === '4:5') {
+                viewport.style.width = '440px';
+                viewport.style.height = '550px';
+                dimLabel.innerText = '1080 x 1350 px';
+            } else if (ratio === '9:16') {
+                viewport.style.width = '338px';
+                viewport.style.height = '600px';
+                dimLabel.innerText = '1080 x 1920 px';
+            }
+        }
+
+        // Apply Style Preset based on User Reference Images
+        function applyStylePreset(preset) {
+            state.presetStyle = preset;
+
+            const brushBg = document.getElementById('brush-splash-bg');
+            const arcBg = document.getElementById('arc-wave-bg');
+            const head1El = document.getElementById('render-head-1');
+
+            if (preset === 'street-food') {
+                // ឆាក្រអប់ / Fried Chicken Style
+                state.bgColor1 = '#991b1b';
+                state.bgColor2 = '#450a0a';
+                state.head1 = 'ឆាក្រអប់សាច់គោ';
+                state.head2 = 'រសជាតិដើម ឈ្ងុយឆ្ងាញ់';
+                state.bubbleText = 'ឆ្ងាញ់ណាស់! 👍';
+                state.priceLabel = 'ត្រឹមតែ';
+                state.priceVal = '10,000';
+                state.priceUnit = 'រៀល';
+                brushBg.classList.remove('hidden');
+                arcBg.classList.add('hidden');
+                head1El.className = 'font-moul text-4xl text-white text-3d-bevel-red tracking-wide';
+            } else if (preset === 'cartoon-comic') {
+                // Omah Bakso Style
+                state.bgColor1 = '#ea580c';
+                state.bgColor2 = '#7c2d12';
+                state.head1 = 'ស៊ុបប្រកិត ឆ្ងាញ់';
+                state.head2 = 'Omah Bakso Special';
+                state.bubbleText = 'ENAK BANGET! ❤️';
+                state.priceLabel = 'SPECIAL';
+                state.priceVal = '$3.50';
+                state.priceUnit = ' / ចាន';
+                brushBg.classList.add('hidden');
+                arcBg.classList.add('hidden');
+                head1El.className = 'font-moul text-4xl text-white text-3d-cartoon tracking-wide';
+            } else if (preset === 'snack-green') {
+                // Sunflower Matcha / Choco Roll Style
+                state.bgColor1 = '#065f46';
+                state.bgColor2 = '#022c22';
+                state.head1 = 'SUNFLOWER MATCHA';
+                state.head2 = 'Healthy Snack for Everyday!';
+                state.bubbleText = 'Matcha Flavor 🌿';
+                state.priceLabel = 'តម្លៃពិសេស';
+                state.priceVal = '$2.00';
+                state.priceUnit = ' / កញ្ចប់';
+                brushBg.classList.add('hidden');
+                arcBg.classList.add('hidden');
+                head1El.className = 'font-moul text-3xl text-yellow-300 text-3d-bevel-gold tracking-wide';
+            } else if (preset === 'modern-arc') {
+                // ស៊ុបជូរហឹរ Style
+                state.bgColor1 = '#f97316';
+                state.bgColor2 = '#9a3412';
+                state.head1 = 'ស៊ុបជូរហឹរ';
+                state.head2 = 'SPICY & SOUR SOUP';
+                state.bubbleText = 'HOT & SPICY 🌶️';
+                brushBg.classList.add('hidden');
+                arcBg.classList.remove('hidden');
+                head1El.className = 'font-moul text-4xl text-white drop-shadow-lg tracking-wide';
+            } else if (preset === 'gold-luxury') {
+                // Angkor CS Whisky Style
+                state.bgColor1 = '#292524';
+                state.bgColor2 = '#0c0a09';
+                state.head1 = 'ANGKOR CS BANANA';
+                state.head2 = 'Premium Spirit • Taste of Cambodia';
+                state.bubbleText = 'Naturally Unique 👑';
+                state.priceLabel = 'LUXURY';
+                state.priceVal = '$45';
+                state.priceUnit = ' / Bottle';
+                brushBg.classList.add('hidden');
+                arcBg.classList.add('hidden');
+                head1El.className = 'font-luxury text-3xl text-luxury-gold tracking-wider uppercase font-bold';
+            }
+
+            // Sync Inputs
+            document.getElementById('input-head-1').value = state.head1;
+            document.getElementById('input-head-2').value = state.head2;
+            document.getElementById('input-bubble').value = state.bubbleText;
+            document.getElementById('input-price-label').value = state.priceLabel;
+            document.getElementById('input-price-val').value = state.priceVal;
+            document.getElementById('input-price-unit').value = state.priceUnit;
+
+            renderPoster();
+        }
+
+        // Master Render Function
+        function renderPoster() {
+            // Read Inputs
+            state.head1 = document.getElementById('input-head-1').value;
+            state.head2 = document.getElementById('input-head-2').value;
+            state.bubbleText = document.getElementById('input-bubble').value;
+            state.font1 = document.getElementById('font-family-1').value;
+            state.fontSize1 = document.getElementById('font-size-1').value;
+
+            state.priceLabel = document.getElementById('input-price-label').value;
+            state.priceVal = document.getElementById('input-price-val').value;
+            state.priceUnit = document.getElementById('input-price-unit').value;
+
+            state.feat1 = document.getElementById('input-feat-1').value;
+            state.feat2 = document.getElementById('input-feat-2').value;
+            state.feat3 = document.getElementById('input-feat-3').value;
+
+            state.phone = document.getElementById('input-phone').value;
+            state.telegram = document.getElementById('input-telegram').value;
+
+            state.showShopee = document.getElementById('show-shopee').checked;
+            state.showTiktok = document.getElementById('show-tiktok').checked;
+
+            // Render Background Gradient
+            const bgEl = document.getElementById('poster-bg');
+            bgEl.style.background = `linear-gradient(180deg, ${state.bgColor1} 0%, ${state.bgColor2} 100%)`;
+
+            // Render Headline Text
+            const h1El = document.getElementById('render-head-1');
+            h1El.innerText = state.head1;
+            h1El.style.fontSize = `${state.fontSize1}px`;
+            
+            document.getElementById('render-head-2').innerText = state.head2;
+            document.getElementById('render-bubble-text').innerText = state.bubbleText;
+
+            // Render Price Badge
+            document.getElementById('render-price-label').innerText = state.priceLabel;
+            document.getElementById('render-price-val').innerText = state.priceVal;
+            document.getElementById('render-price-unit').innerText = state.priceUnit;
+
+            // Render Features
+            document.getElementById('render-feat-1').innerText = state.feat1;
+            document.getElementById('render-feat-2').innerText = state.feat2;
+            document.getElementById('render-feat-3').innerText = state.feat3;
+
+            // Render Footer Contacts
+            document.getElementById('render-phone').innerText = state.phone;
+            document.getElementById('render-telegram').innerText = state.telegram;
+
+            // Render Badges visibility
+            document.getElementById('badge-shopee').style.display = state.showShopee ? 'inline-flex' : 'none';
+            document.getElementById('badge-tiktok').style.display = state.showTiktok ? 'inline-flex' : 'none';
+        }
+
+        // Export Canvas Function
+        function exportPosterHD() {
+            const canvas = document.getElementById('export-canvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = 1080;
+            let height = 1080;
+
+            if (state.aspectRatio === '4:5') height = 1350;
+            if (state.aspectRatio === '9:16') height = 1920;
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // Draw Background
+            const grad = ctx.createLinearGradient(0, 0, 0, height);
+            grad.addColorStop(0, state.bgColor1);
+            grad.addColorStop(1, state.bgColor2);
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw Header Text 1
+            ctx.font = `${state.fontSize1 * 2}px "Moul", cursive`;
+            ctx.textAlign = 'center';
+
+            // Shadow
+            ctx.fillStyle = '#450a0a';
+            ctx.fillText(state.head1, width / 2 + 6, 226);
+
+            // Stroke
+            ctx.strokeStyle = '#991b1b';
+            ctx.lineWidth = 14;
+            ctx.strokeText(state.head1, width / 2, 220);
+
+            // Text Fill
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(state.head1, width / 2, 220);
+
+            // Subhead
+            ctx.font = 'bold 36px "Battambang", sans-serif';
+            ctx.fillStyle = '#facc15';
+            ctx.fillText(state.head2, width / 2, 290);
+
+            // Footer Bar Box
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(40, height - 140, width - 80, 90);
+
+            ctx.font = 'bold 30px "Kantumruy Pro", sans-serif';
+            ctx.fillStyle = '#facc15';
+            ctx.textAlign = 'left';
+            ctx.fillText(state.phone, 70, height - 85);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.textAlign = 'right';
+            ctx.fillText(state.telegram, width - 70, height - 85);
+
+            // Trigger Download
+            const link = document.createElement('a');
+            link.download = `Khmer-Promo-Poster-HD-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
+```
