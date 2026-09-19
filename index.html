@@ -1,1337 +1,416 @@
-```html
 <!DOCTYPE html>
 <html lang="km">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Khmer Commercial Poster Studio Pro - ខ្មែរឌីសាញ 3D Studio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momore Wholesale WebApp - Admin & Shop</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Google Fonts: Kantumruy Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #f39c12;        /* Vibrant Orange */
+      --primary-dark: #d35400;   /* Deep Orange */
+      --dark-bg: #121212;
+      --light-bg: #f5f6fa;
+      --card-bg: #ffffff;
+      --text-dark: #1a1a1a;
+      --text-gray: #666666;
+      --price-red: #e74c3c;     
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kantumruy Pro', sans-serif; }
+    body { background-color: var(--light-bg); color: var(--text-dark); padding-bottom: 120px; }
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    header { 
+      background: linear-gradient(135deg, #121212 0%, #2c2c2c 100%); 
+      color: var(--primary); 
+      padding: 14px; 
+      text-align: center; 
+      font-weight: 700; 
+      font-size: 1.2rem; 
+      position: sticky; 
+      top: 0; 
+      z-index: 100; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .admin-toggle-btn {
+      background: var(--primary);
+      color: #121212;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
     
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    .container { max-width: 600px; margin: auto; padding: 10px; }
+
+    /* Check-in Card */
+    .reward-card {
+      background: linear-gradient(135deg, #1e1e1e 0%, #2d251e 100%);
+      border: 1.5px solid var(--primary);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
+    .reward-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .reward-title { font-weight: 700; font-size: 1rem; color: var(--primary); }
+    .coin-badge { background: var(--primary); color: #121212; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
     
-    <!-- Google Khmer & Display Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700;900&family=Kantumruy+Pro:wght@400;600;700;900&family=Koulen&family=Moul&family=Siemreap&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    .checkin-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; text-align: center; }
+    .day-box { background: #2a2a2a; border-radius: 8px; padding: 6px 2px; border: 1px solid #444; font-size: 0.7rem; color: #ccc; }
+    .day-box.active { background: var(--primary); color: #121212; border-color: var(--primary); font-weight: 700; }
+    .day-box .pts { font-size: 0.62rem; color: #aaa; display: block; }
+    
+    .btn-checkin { width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.9rem; margin-top: 10px; cursor: pointer; }
+    .btn-checkin:disabled { background: #444; color: #888; cursor: not-allowed; }
 
-    <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
+    /* Hero Banner */
+    .hero-banner-large {
+      width: 100%;
+      height: 220px;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 15px;
+      border: 1.5px solid var(--primary);
+      background: #121212;
+    }
+    .hero-banner-media { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 16px;
+      color: #ffffff;
+    }
+    .hero-banner-overlay h1 { font-size: 1.2rem; color: var(--primary); font-weight: 700; margin-bottom: 4px; }
+    .hero-banner-overlay p { font-size: 0.82rem; color: #f0f0f0; }
 
-        body {
-            font-family: 'Kantumruy Pro', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            user-select: none;
-        }
+    /* Section Headers */
+    .section-title-box {
+      margin: 20px 0 10px 0;
+      padding: 10px 12px;
+      background: linear-gradient(135deg, #121212 0%, #2a2a2a 100%);
+      border-radius: 10px;
+      border-left: 5px solid var(--primary);
+      color: #ffffff;
+    }
+    .sec-title-main { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .sec-title-sub { font-size: 0.78rem; color: #dddddd; margin-top: 2px; }
 
-        /* FONT CLASSES */
-        .font-moul { font-family: 'Moul', cursive; }
-        .font-koulen { font-family: 'Koulen', cursive; }
-        .font-battambang { font-family: 'Battambang', sans-serif; }
-        .font-luxury { font-family: 'Playfair Display', serif; }
+    /* Product Grid */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .product-card { background: var(--card-bg); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #e0e0e0; }
+    .media-box { width: 100%; height: 180px; background-color: #121212; position: relative; overflow: hidden; }
+    .media-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    
+    .product-info { padding: 8px 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; }
+    .row-1-type { font-size: 0.78rem; color: var(--text-gray); font-weight: 600; }
+    .row-2-flavor { font-size: 1rem; font-weight: 700; color: #121212; margin: 2px 0 4px 0; }
+    .row-3-price-weight { display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px; }
+    .price-tag { font-size: 1.1rem; font-weight: 700; color: var(--price-red); }
+    .weight-tag { font-size: 0.78rem; font-weight: 600; color: #777; }
+    
+    .quantity-control { display: flex; align-items: center; justify-content: space-between; background: #f1f2f6; border-radius: 8px; padding: 2px 4px; }
+    .btn-qty { width: 28px; height: 28px; background: white; border: 1px solid #ccc; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1rem; color: var(--primary-dark); }
+    .qty-number { font-weight: 700; font-size: 0.95rem; color: #121212; }
 
-        /* Crisp 3D Text Engines */
-        .text-3d-bevel-red {
-            color: #ffffff;
-            -webkit-text-stroke: var(--stroke-width-val, 5px) var(--stroke-color-val, #991b1b);
-            paint-order: stroke fill;
-            filter: drop-shadow(0px var(--shadow-y-val, 6px) 0px var(--shadow-color-val, #450a0a)) drop-shadow(0px 12px 18px rgba(0, 0, 0, 0.8));
-        }
+    /* Admin Panel Style */
+    #admin-panel {
+      display: none;
+      background: #1e1e1e;
+      color: #fff;
+      padding: 15px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      border: 2px solid var(--primary);
+    }
+    .admin-panel h2 { color: var(--primary); font-size: 1.1rem; margin-bottom: 10px; }
+    .admin-item-row { background: #2a2a2a; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+    .admin-item-row label { font-size: 0.78rem; color: #aaa; display: block; margin-top: 4px; }
+    .admin-item-row input { width: 100%; padding: 6px; margin-top: 2px; border-radius: 6px; border: 1px solid #444; background: #121212; color: #fff; font-size: 0.85rem; }
+    .btn-save-admin { background: #2ecc71; color: #121212; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 8px; }
 
-        .text-3d-bevel-gold {
-            color: #fef08a;
-            -webkit-text-stroke: var(--stroke-width-val, 5px) var(--stroke-color-val, #854d0e);
-            paint-order: stroke fill;
-            filter: drop-shadow(0px var(--shadow-y-val, 6px) 0px var(--shadow-color-val, #451a03)) drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.7));
-        }
+    /* Form & Cart Bar */
+    .form-section { background: #ffffff; padding: 15px; border-radius: 14px; margin-top: 15px; border: 1px solid #eaeaea; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; color: #121212; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 0.88rem; background: #fafafa; }
 
-        .text-3d-cartoon {
-            color: #ffffff;
-            -webkit-text-stroke: var(--stroke-width-val, 5px) var(--stroke-color-val, #0f172a);
-            paint-order: stroke fill;
-            filter: drop-shadow(4px 4px 0px #dc2626) drop-shadow(6px 6px 0px #000000);
-        }
-
-        /* Anti-wobble Poster Viewport Container */
-        .poster-viewport-box {
-            transition: aspect-ratio 0.25s ease-in-out, max-width 0.25s ease-in-out;
-            will-change: aspect-ratio, max-width;
-        }
-
-        /* Custom Speech Bubble */
-        .speech-bubble {
-            position: relative;
-            background: #facc15;
-            color: #0f172a;
-            border-radius: .8em;
-        }
-        .speech-bubble:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border: 8px solid transparent;
-            border-top-color: #facc15;
-            border-bottom: 0;
-            margin-left: -8px;
-            margin-bottom: -8px;
-        }
-
-        /* Floating Graphic Elements Animation */
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(4deg); }
-        }
-        .animate-float {
-            animation: floatSlow 3.5s ease-in-out infinite;
-        }
-
-        /* UI THEMES */
-        body.theme-midnight {
-            --app-bg: #090d16;
-            --app-header-bg: #0f172a;
-            --app-card-bg: #1e293b;
-            --app-border: #334155;
-            --app-text: #f8fafc;
-            --app-text-muted: #94a3b8;
-            --app-accent: #f59e0b;
-        }
-
-        body.theme-light {
-            --app-bg: #f1f5f9;
-            --app-header-bg: #ffffff;
-            --app-card-bg: #ffffff;
-            --app-border: #cbd5e1;
-            --app-text: #0f172a;
-            --app-text-muted: #64748b;
-            --app-accent: #d97706;
-        }
-
-        body.theme-gold {
-            --app-bg: #1c1917;
-            --app-header-bg: #292524;
-            --app-card-bg: #44403c;
-            --app-border: #78350f;
-            --app-text: #fef08a;
-            --app-text-muted: #d6d3d1;
-            --app-accent: #eab308;
-        }
-
-        .bg-app { background-color: var(--app-bg); }
-        .bg-app-header { background-color: var(--app-header-bg); }
-        .bg-app-card { background-color: var(--app-card-bg); }
-        .border-app { border-color: var(--app-border); }
-        .text-app { color: var(--app-text); }
-        .text-app-muted { color: var(--app-text-muted); }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 4px; }
-    </style>
+    .cart-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #121212; color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: auto; border-top-left-radius: 16px; border-top-right-radius: 16px; border-top: 2px solid var(--primary); z-index: 999; }
+    .total-price { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+    .btn-checkout { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+  </style>
 </head>
-<body class="theme-midnight h-screen flex flex-col overflow-hidden bg-app text-app">
+<body>
 
-    <!-- Top Navigation Header -->
-    <header class="h-16 bg-app-header border-b border-app flex items-center justify-between px-3 md:px-5 z-30 shrink-0 gap-2 shadow-md">
-        
-        <!-- Logo & Title -->
-        <div class="flex items-center space-x-2 shrink-0">
-            <div class="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-tr from-amber-500 via-yellow-500 to-orange-600 rounded-xl flex items-center justify-center text-slate-950 shadow-md shrink-0 font-extrabold">
-                <i class="fa-solid fa-pepper-hot text-base md:text-lg"></i>
-            </div>
-            <div>
-                <h1 class="font-bold text-xs md:text-base leading-tight text-amber-400 font-battambang">Khmer Banana Poster Studio Pro</h1>
-                <p class="text-[10px] text-app-muted hidden sm:block">ឌីសាញបដាចេកបំពងស្រួយក្រឡុកគ្រឿង & ដំណាប់ចេក (មានស្ទីក និងក្រាហ្វិក 3D)</p>
-            </div>
-        </div>
+  <header>
+    <span>🍌 MOMORE Wholesale</span>
+    <button class="admin-toggle-btn" onclick="toggleAdminPanel()">⚙️ កែទិន្នន័យ (Admin)</button>
+  </header>
 
-        <!-- Canvas Ratio Switcher -->
-        <div class="flex items-center space-x-1 bg-black/20 p-1 rounded-xl text-xs font-bold border border-app">
-            <button onclick="setAspectRatio('1:1')" id="ratio-1:1" class="px-2.5 py-1.5 rounded-lg transition-all bg-amber-500 text-slate-950 font-extrabold">
-                1:1
-            </button>
-            <button onclick="setAspectRatio('4:5')" id="ratio-4:5" class="px-2.5 py-1.5 rounded-lg transition-all text-app-muted hover:text-app">
-                4:5
-            </button>
-            <button onclick="setAspectRatio('9:16')" id="ratio-9:16" class="px-2.5 py-1.5 rounded-lg transition-all text-app-muted hover:text-app">
-                9:16
-            </button>
-        </div>
+  <div class="container">
 
-        <!-- Actions: Pop Preview & Export -->
-        <div class="flex items-center gap-1.5 sm:gap-2">
-            
-            <!-- Pop-Up Full Preview Button -->
-            <button onclick="openFullPreviewModal()" class="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-400 font-bold px-2.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-md">
-                <i class="fa-solid fa-expand text-sm"></i>
-                <span class="hidden md:inline">លោត Pop-Up ធំ</span>
-            </button>
-
-            <!-- App UI Theme Dropdown -->
-            <div class="relative">
-                <button onclick="toggleThemeMenu()" class="bg-app-card hover:border-amber-400 border border-app text-amber-400 font-bold px-2.5 py-2 rounded-xl text-xs flex items-center gap-1 transition-all">
-                    <i class="fa-solid fa-palette text-sm"></i>
-                    <span class="hidden md:inline">UI Theme</span>
-                </button>
-
-                <!-- Theme Selection Popup -->
-                <div id="theme-menu" class="hidden absolute right-0 top-12 w-44 bg-app-card border border-app rounded-xl shadow-2xl p-2 z-50 space-y-1">
-                    <div class="text-[10px] uppercase font-bold text-app-muted px-2 py-1">ជ្រើសរើស App Theme</div>
-                    <button onclick="changeAppTheme('theme-midnight')" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold hover:bg-black/20 flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-600"></span> Midnight Dark
-                    </button>
-                    <button onclick="changeAppTheme('theme-light')" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-800 hover:bg-slate-100 flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-slate-100 border border-slate-400"></span> Clean Light
-                    </button>
-                    <button onclick="changeAppTheme('theme-gold')" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold text-yellow-300 hover:bg-black/20 flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-yellow-500 border border-yellow-300"></span> Royal Gold
-                    </button>
-                </div>
-            </div>
-
-            <!-- Export HD Button -->
-            <button onclick="exportPosterHD()" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-extrabold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">
-                <i class="fa-solid fa-download text-sm"></i>
-                <span class="hidden sm:inline">ទាញយករូប</span> HD
-            </button>
-
-        </div>
-    </header>
-
-    <!-- Main Workspace Studio Layout -->
-    <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
-
-        <!-- Left Sidebar Controls -->
-        <aside class="w-full md:w-96 bg-app-header border-r border-app flex flex-col overflow-hidden shrink-0 h-[50%] md:h-full z-10">
-            
-            <!-- Sidebar Navigation Tabs -->
-            <div class="flex border-b border-app bg-black/10 text-[11px] font-bold shrink-0">
-                <button onclick="switchTab('style')" id="tab-btn-style" class="flex-1 py-3 text-amber-400 border-b-2 border-amber-400 flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-shapes"></i>
-                    <span> Presets</span>
-                </button>
-                <button onclick="switchTab('graphics')" id="tab-btn-graphics" class="flex-1 py-3 text-app-muted hover:text-app border-b-2 border-transparent flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-cookie"></i>
-                    <span>រូបចេក&ស្ទីក</span>
-                </button>
-                <button onclick="switchTab('text')" id="tab-btn-text" class="flex-1 py-3 text-app-muted hover:text-app border-b-2 border-transparent flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-font"></i>
-                    <span>អក្សរ 3D</span>
-                </button>
-                <button onclick="switchTab('dual')" id="tab-btn-dual" class="flex-1 py-3 text-app-muted hover:text-app border-b-2 border-transparent flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-columns"></i>
-                    <span> dual Split</span>
-                </button>
-                <button onclick="switchTab('footer')" id="tab-btn-footer" class="flex-1 py-3 text-app-muted hover:text-app border-b-2 border-transparent flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-store"></i>
-                    <span>Footer</span>
-                </button>
-            </div>
-
-            <!-- Tab Content Panels -->
-            <div class="flex-1 overflow-y-auto p-3.5 space-y-4">
-
-                <!-- TAB 1: Banana Product Presets -->
-                <div id="tab-style" class="space-y-3">
-                    <label class="text-xs font-bold uppercase tracking-wider text-amber-400 block border-b border-app pb-1.5">
-                        <i class="fa-solid fa-box-open mr-1"></i> ជ្រើសរើស Preset ផលិតផលចេកខ្មែរ
-                    </label>
-                    <div class="grid grid-cols-1 gap-2 text-xs">
-                        
-                        <!-- Preset 1: ចេកបំពងស្រួយ ក្រឡុកគ្រឿងចម្រុះ (Crispy Chips Highlight) -->
-                        <button onclick="applyStylePreset('crispy-banana-flavors')" class="p-2.5 rounded-xl bg-gradient-to-r from-red-950 via-orange-900 to-red-900 border-2 border-amber-400 text-left hover:border-amber-300 transition-all flex items-center justify-between active:scale-98 shadow-lg">
-                            <div>
-                                <div class="font-extrabold text-yellow-300 text-xs sm:text-sm">🍟 1. ចេកបំពងស្រួយ ក្រឡុកគ្រឿង (Crispy Chips)</div>
-                                <div class="text-[10px] text-amber-100 mt-0.5">ចេកបន្ទះស្រួយៗ ក្រឡុកគ្រឿងម្ទេស, ឈីស, សូកូឡា, BBQ, ទឹកដោះគោ</div>
-                            </div>
-                            <span class="w-3 h-3 rounded-full bg-red-500 shrink-0 border border-white"></span>
-                        </button>
-
-                        <!-- Preset Dual Split View -->
-                        <button onclick="applyStylePreset('dual-split-master')" class="p-2.5 rounded-xl bg-gradient-to-r from-amber-900 via-orange-950 to-red-950 border border-amber-500/60 text-left hover:border-amber-300 transition-all flex items-center justify-between active:scale-98">
-                            <div>
-                                <div class="font-extrabold text-amber-300 text-xs sm:text-sm">🔥 2. បដាពាក់កណ្តាល ម្ខាងៗ (Dual Split Banner)</div>
-                                <div class="text-[10px] text-amber-100 mt-0.5">ម្ខាងដំណាប់ចេក (៥ រសជាតិ) • ម្ខាងចេកបំពងស្រួយក្រឡុកគ្រឿង</div>
-                            </div>
-                            <span class="w-3 h-3 rounded-full bg-amber-400 shrink-0 border border-white"></span>
-                        </button>
-
-                        <!-- Preset 3: ដំណាប់ចេកស្ងួត 5 រសជាតិ -->
-                        <button onclick="applyStylePreset('dried-banana-5-flavors')" class="p-2.5 rounded-xl bg-gradient-to-r from-amber-950 via-yellow-900 to-amber-950 border border-amber-500/60 text-left hover:border-amber-300 transition-all flex items-center justify-between active:scale-98">
-                            <div>
-                                <div class="font-extrabold text-amber-200 text-xs sm:text-sm">🍌 3. ដំណាប់ចេកស្ងួត 5 រសជាតិ ( 10,000៛ - 12,000៛ )</div>
-                                <div class="text-[10px] text-slate-300 mt-0.5">រសជាតិដើម, រោយល្ង, រោយអាល់ម៉ុន, ធញ្ញជាតិ, រោយដូង</div>
-                            </div>
-                            <span class="w-3 h-3 rounded-full bg-amber-400 shrink-0 border border-white"></span>
-                        </button>
-
-                        <!-- Preset 4: ដំណាប់ចេករោយគ្រាប់ធញ្ញជាតិ & អាល់ម៉ុន -->
-                        <button onclick="applyStylePreset('dried-nuts-seeds')" class="p-2.5 rounded-xl bg-gradient-to-r from-stone-900 via-amber-950 to-stone-900 border border-amber-600/50 text-left hover:border-amber-300 transition-all flex items-center justify-between active:scale-98">
-                            <div>
-                                <div class="font-extrabold text-amber-200 text-xs sm:text-sm">🥜 4. ដំណាប់ចេករោយគ្រាប់ធញ្ញជាតិ & អាល់ម៉ុន</div>
-                                <div class="text-[10px] text-slate-300 mt-0.5">មានរោយចំណិតអាល់ម៉ុន • គ្រាប់ពៅ • គ្រាប់លៀត</div>
-                            </div>
-                            <span class="w-3 h-3 rounded-full bg-amber-600 shrink-0 border border-white"></span>
-                        </button>
-
-                    </div>
-
-                    <!-- Custom Background Color Picker -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <span class="text-xs font-bold text-app block">កំណត់ពណ៌ Background ផ្ទាល់ខ្លួន</span>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="text-[10px] text-app-muted font-semibold block mb-1">ពណ៌ខាងលើ</label>
-                                <input type="color" id="bg-color-1" value="#991b1b" onchange="renderPoster()" class="w-full h-8 rounded bg-black/20 border border-app cursor-pointer">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-app-muted font-semibold block mb-1">ពណ៌ខាងក្រោម</label>
-                                <input type="color" id="bg-color-2" value="#450a0a" onchange="renderPoster()" class="w-full h-8 rounded bg-black/20 border border-app cursor-pointer">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB NEW: GRAPHICS, BANANA SLICES & STICKERS -->
-                <div id="tab-graphics" class="space-y-3 hidden">
-                    
-                    <!-- Graphic Vector Selection for Crispy Banana Chips -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-amber-400/50">
-                        <label class="text-xs font-bold text-amber-400 block border-b border-app pb-1">
-                            <i class="fa-solid fa-bowl-food mr-1"></i> ជ្រើសរើសក្រាហ្វិកចេកបំពង & គ្រឿងក្រឡុក
-                        </label>
-
-                        <div class="grid grid-cols-2 gap-2 pt-1 text-xs">
-                            <button onclick="setProductIconKey('crispyChips')" class="p-2 bg-black/30 hover:bg-amber-500/20 border border-amber-500/40 rounded-lg text-left font-bold text-amber-200">
-                                🍟 1. បន្ទះចេកស្រួយ & គ្រឿងក្រឡុក
-                            </button>
-                            <button onclick="setProductIconKey('bananaBunchChips')" class="p-2 bg-black/30 hover:bg-amber-500/20 border border-amber-500/40 rounded-lg text-left font-bold text-amber-200">
-                                🍌 2. ចេកស្និត & បន្ទះចេកហោះ
-                            </button>
-                            <button onclick="setProductIconKey('pouchSnack')" class="p-2 bg-black/30 hover:bg-amber-500/20 border border-amber-500/40 rounded-lg text-left font-bold text-amber-200">
-                                🛍️ 3. កញ្ចប់ថង់ Zipper 3D
-                            </button>
-                            <button onclick="setProductIconKey('driedBanana')" class="p-2 bg-black/30 hover:bg-amber-500/20 border border-amber-500/40 rounded-lg text-left font-bold text-amber-200">
-                                🥣 4. ជើងពានដំណាប់ចេកស្ងួត
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Custom Image / Sticker Upload -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <label class="text-xs font-bold text-amber-400 block">
-                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> បញ្ចូលរូបថតផលិតផល ឬស្ទីកឃ័ររបស់អ្នក (Upload PNG/JPG)
-                        </label>
-                        <input type="file" id="user-image-upload" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-app-muted file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-extrabold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer">
-                        <div id="upload-status" class="text-[10px] text-emerald-400 hidden font-bold">✓ បានបញ្ចូលរូបថតជោគជ័យ!</div>
-                        <button id="remove-upload-btn" onclick="removeUploadedImage()" class="hidden text-[10px] text-red-400 font-bold underline">លុបរូបថតដែលបានបញ្ចូល</button>
-                    </div>
-
-                    <!-- Promotional Sticker Overlay Badges -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <span class="text-xs font-bold text-amber-400 block">ស្ទីកឃ័រ/ផ្លាកសញ្ញាប្រូម៉ូសិន (Sticker Overlay Badges)</span>
-                        
-                        <div class="space-y-2 text-xs">
-                            <label class="flex items-center justify-between p-2 bg-black/20 rounded-lg border border-app cursor-pointer">
-                                <span class="font-bold text-yellow-300">⭐ ស្ទីក: "100% ស្រួយពិសេស"</span>
-                                <input type="checkbox" id="sticker-crispy" checked onchange="renderPoster()" class="w-4 h-4 accent-amber-500">
-                            </label>
-
-                            <label class="flex items-center justify-between p-2 bg-black/20 rounded-lg border border-app cursor-pointer">
-                                <span class="font-bold text-red-400">🔥 ស្ទីក: "ក្រឡុកគ្រឿងដិត"</span>
-                                <input type="checkbox" id="sticker-seasoning" checked onchange="renderPoster()" class="w-4 h-4 accent-amber-500">
-                            </label>
-
-                            <label class="flex items-center justify-between p-2 bg-black/20 rounded-lg border border-app cursor-pointer">
-                                <span class="font-bold text-emerald-300">❤️ ស្ទីក: "ផលិតផលកូនខ្មែរ"</span>
-                                <input type="checkbox" id="sticker-khmer" checked onchange="renderPoster()" class="w-4 h-4 accent-amber-500">
-                            </label>
-
-                            <label class="flex items-center justify-between p-2 bg-black/20 rounded-lg border border-app cursor-pointer">
-                                <span class="font-bold text-amber-200">✨ បន្ថែម បន្ទះចេកហោះ លើ Background</span>
-                                <input type="checkbox" id="toggle-floating-chips" checked onchange="renderPoster()" class="w-4 h-4 accent-amber-500">
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- TAB 3: Text Controls -->
-                <div id="tab-text" class="space-y-3 hidden">
-                    
-                    <!-- Headline 1 -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <label class="text-xs font-bold text-amber-400 block">ចំណងជើងធំ ជួរទី ១ (Headline 1)</label>
-                        <input type="text" id="input-head-1" value="ចេកបំពងស្រួយ ក្រឡុកគ្រឿង" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg px-3 py-2 text-xs text-app font-bold">
-                        
-                        <div class="grid grid-cols-2 gap-2 pt-1">
-                            <div>
-                                <label class="text-[10px] text-app-muted block mb-1">ជ្រើសរើស Font</label>
-                                <select id="font-family-1" onchange="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg p-1.5 text-xs text-app font-semibold">
-                                    <option value="font-moul" selected>Font: Moul (មូល 3D)</option>
-                                    <option value="font-koulen">Font: Koulen (កូលែន)</option>
-                                    <option value="font-battambang">Font: Battambang (បាត់ដំបង)</option>
-                                    <option value="font-luxury">Font: Luxury Serif</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-app-muted block mb-1">ទំហំអក្សរ (px)</label>
-                                <input type="number" id="font-size-1" value="30" min="18" max="80" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg p-1.5 text-xs text-center text-app font-bold">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Headline 2 -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <label class="text-xs font-bold text-yellow-400 block">ចំណងជើង ជួរទី ២ (Subhead / Brand)</label>
-                        <input type="text" id="input-head-2" value="សូកូឡា • ទឹកដោះគោ • ឈីស • គ្រឿង BBQ • ហឹរ" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg px-3 py-2 text-xs text-app font-bold">
-                    </div>
-
-                    <!-- Speech Bubble Text -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <label class="text-xs font-bold text-amber-300 block">អក្សរក្នុង Speech Bubble (ពពុះនិយាយ)</label>
-                        <input type="text" id="input-bubble" value="🍟 ចេកបន្ទះបំពងស្រួយៗ ក្រឡុកគ្រឿងដិតឈ្ងុយឆ្ងាញ់!" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg px-3 py-2 text-xs text-app font-semibold">
-                    </div>
-
-                    <!-- Price Badge Inputs -->
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <span class="text-xs font-bold text-amber-400 block">ផ្លាកតម្លៃ (Price Tag)</span>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div>
-                                <label class="text-[10px] text-app-muted block">លាក</label>
-                                <input type="text" id="input-price-label" value="SPECIAL" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded px-2 py-1 text-xs text-app">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-app-muted block">តម្លៃ</label>
-                                <input type="text" id="input-price-val" value="10,000" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded px-2 py-1 text-xs text-app font-bold">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-app-muted block">ខ្នាត</label>
-                                <input type="text" id="input-price-unit" value="រៀល" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded px-2 py-1 text-xs text-app">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- TAB 4: Dual Split Column Controls -->
-                <div id="tab-dual" class="space-y-3 hidden">
-                    <div class="bg-app-card p-3 rounded-xl border border-amber-400/50 space-y-2">
-                        <div class="flex items-center justify-between border-b border-app pb-1">
-                            <span class="text-xs font-bold text-amber-400">បើកការបែងចែក ២ ផ្នែក (Dual Split View)</span>
-                            <label class="flex items-center gap-1.5 cursor-pointer">
-                                <input type="checkbox" id="toggle-dual-split" onchange="renderPoster()" class="w-4 h-4 accent-amber-500">
-                                <span class="text-xs font-bold text-amber-300">បើក Split Layout</span>
-                            </label>
-                        </div>
-                        <p class="text-[10px] text-app-muted">បែងចែកបដាជា ២ Column: ម្ខាងប្រភេទដំណាប់ចេកស្ងួត ម្ខាងទៀតប្រភេទចេកបំពងស្រួយ!</p>
-                    </div>
-
-                    <!-- Left Column: Dried Bananas -->
-                    <div class="space-y-2 bg-app-card p-2.5 rounded-xl border border-amber-500/50">
-                        <span class="text-xs font-bold text-amber-300 flex items-center gap-1">
-                            <i class="fa-solid fa-cookie-bite"></i> ផ្នែកទី ១: ដំណាប់ចេកស្ងួត ( Dried Banana )
-                        </span>
-                        <input type="text" id="dual-left-title" value="🍌 ក្រុមដំណាប់ចេកស្ងួត" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1.5 text-xs text-amber-200 font-bold mb-1">
-                        
-                        <div class="space-y-1.5 text-xs">
-                            <input type="text" id="dual-left-item-1" value="1. រសជាតិដើម — 10,000៛ / 200g" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-left-item-2" value="2. រោយល្ង សខ្មៅ — 10,000៛ / 200g" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-left-item-3" value="3. រោយអាល់ម៉ុន — 12,000៛ / 200g" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-left-item-4" value="4. ធញ្ញជាតិគ្រប់មុខ — 12,000៛ / 200g" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-left-item-5" value="5. រោយកំទេចដូង — 12,000៛ / 200g" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Crispy Chips with Flavors -->
-                    <div class="space-y-2 bg-app-card p-2.5 rounded-xl border border-red-500/50">
-                        <span class="text-xs font-bold text-red-400 flex items-center gap-1">
-                            <i class="fa-solid fa-bowl-food"></i> ផ្នែកទី ២: ចេកបំពងស្រួយក្រឡុកគ្រឿង ( Crispy Banana )
-                        </span>
-                        <input type="text" id="dual-right-title" value="🍟 ក្រុមចេកបំពងស្រួយ" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1.5 text-xs text-yellow-300 font-bold mb-1">
-                        
-                        <div class="space-y-1.5 text-xs">
-                            <input type="text" id="dual-right-item-1" value="🍫 រសជាតិសូកូឡា (Chocolate)" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-right-item-2" value="🥛 រសជាតិទឹកដោះគោ (Sweet Milk)" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-right-item-3" value="🧀 ឈីសទឹកដោះគោ (Cheese Milk)" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-right-item-4" value="🍢 គ្រឿងបាប៊ីឃ្យូ (Barbecue BBQ)" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                            <input type="text" id="dual-right-item-5" value="🌶️ គ្រឿងឥណ្ឌូណេស៊ីហឹរផ្អែម" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded p-1 text-[11px] text-app">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 5: Footer Bar & Delivery Info -->
-                <div id="tab-footer" class="space-y-3 hidden">
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <span class="text-xs font-bold text-amber-400 block">បង្ហាញ Logo ដឹកជញ្ជូន (Delivery Partners)</span>
-                        <div class="grid grid-cols-3 gap-2 text-xs">
-                            <label class="flex items-center gap-1.5 p-2 bg-black/20 rounded-lg cursor-pointer">
-                                <input type="checkbox" id="show-grab" checked onchange="renderPoster()" class="w-3.5 h-3.5 accent-amber-500">
-                                <span class="text-[11px] font-semibold">Grab</span>
-                            </label>
-                            <label class="flex items-center gap-1.5 p-2 bg-black/20 rounded-lg cursor-pointer">
-                                <input type="checkbox" id="show-foodpanda" checked onchange="renderPoster()" class="w-3.5 h-3.5 accent-amber-500">
-                                <span class="text-[11px] font-semibold">FoodPanda</span>
-                            </label>
-                            <label class="flex items-center gap-1.5 p-2 bg-black/20 rounded-lg cursor-pointer">
-                                <input type="checkbox" id="show-eget" checked onchange="renderPoster()" class="w-3.5 h-3.5 accent-amber-500">
-                                <span class="text-[11px] font-semibold">E-Get</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2 bg-app-card p-3 rounded-xl border border-app">
-                        <span class="text-xs font-bold text-app block">ព័ត៌មានទំនាក់ទំនង Footer</span>
-                        <input type="text" id="input-phone" value="📞 កុម្ម៉ង់: 088 929 9948 / 087 258 800" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg px-3 py-2 text-xs text-app font-bold">
-                        <input type="text" id="input-telegram" value="Telegram: @KhmerBananaOfficial" oninput="renderPoster()" class="w-full bg-black/20 border border-app rounded-lg px-3 py-2 text-xs text-app">
-                    </div>
-                </div>
-
-            </div>
-        </aside>
-
-        <!-- Right Live Preview Workspace -->
-        <main class="flex-1 bg-black/30 flex flex-col items-center justify-center p-2 sm:p-4 relative overflow-hidden h-[50%] md:h-full">
-            
-            <!-- Dimension Tag Badge -->
-            <div class="absolute top-2 right-3 bg-app-card/90 backdrop-blur border border-app px-2.5 py-1 rounded-full text-[10px] text-app-muted flex items-center gap-1.5 z-10 shadow-md">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span id="canvas-dimensions-label">1080 x 1080 px</span>
-            </div>
-
-            <!-- LOCKED POSTER CONTAINER VIEWPORT -->
-            <div class="w-full h-full flex items-center justify-center p-1">
-                <div id="poster-viewport" class="poster-viewport-box relative shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between select-none border border-app/50" style="aspect-ratio: 1/1; max-width: 440px; max-height: 100%;">
-                    
-                    <!-- Dynamic Background Layer -->
-                    <div id="poster-bg" class="absolute inset-0 z-0 bg-gradient-to-b from-red-900 via-orange-950 to-slate-950">
-                        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-transparent to-transparent"></div>
-                        <div id="brush-splash-bg" class="absolute top-6 left-1/2 -translate-x-1/2 w-[92%] h-14 bg-amber-400 transform -rotate-1 border-2 border-amber-300 shadow-xl"></div>
-                        
-                        <!-- Floating Banana Chip Particles Overlay Layer -->
-                        <div id="floating-chips-container" class="absolute inset-0 pointer-events-none z-0">
-                            <!-- Populated dynamically via JS -->
-                        </div>
-                    </div>
-
-                    <!-- Poster Elements Content Container -->
-                    <div class="relative z-10 w-full h-full flex flex-col justify-between p-3 sm:p-4">
-
-                        <!-- TOP SECTION: Speech Bubble & 3D Header -->
-                        <div class="text-center space-y-1 relative pt-0.5 shrink-0">
-                            
-                            <!-- Floating Speech Bubble -->
-                            <div id="speech-bubble-el" class="speech-bubble px-3 py-0.5 text-[10px] font-extrabold inline-block transform -rotate-2 shadow-xl mb-0.5 border border-slate-900">
-                                <span id="render-bubble-text">🍟 ចេកបន្ទះបំពងស្រួយៗ ក្រឡុកគ្រឿងដិតឈ្ងុយឆ្ងាញ់!</span>
-                            </div>
-
-                            <!-- 3D Header Typography Engine -->
-                            <div class="py-0.5">
-                                <h1 id="render-head-1" class="font-moul text-xl sm:text-2xl text-white text-3d-bevel-red tracking-wide leading-tight">
-                                    ចេកបំពងស្រួយ ក្រឡុកគ្រឿង
-                                </h1>
-                                <h2 id="render-head-2" class="font-battambang font-bold text-[11px] sm:text-xs text-yellow-300 drop-shadow-lg mt-0.5">
-                                    សូកូឡា • ទឹកដោះគោ • ឈីស • គ្រឿង BBQ • ហឹរ
-                                </h2>
-                            </div>
-                        </div>
-
-                        <!-- MIDDLE SECTION: DUAL SPLIT VIEW OR SINGLE GRAPHIC MODE -->
-                        <div class="flex-1 flex items-center justify-center relative my-1 overflow-hidden">
-                            
-                            <!-- DUAL SPLIT COLUMN MODE -->
-                            <div id="dual-split-view" class="w-full h-full grid grid-cols-2 gap-2 z-10 hidden">
-                                
-                                <!-- LEFT COLUMN: DRIED BANANA -->
-                                <div class="bg-gradient-to-b from-amber-950/80 to-slate-950/90 border border-amber-400/50 rounded-xl p-2 flex flex-col justify-between backdrop-blur-sm shadow-md">
-                                    <div class="border-b border-amber-500/40 pb-1 mb-1 text-center">
-                                        <div id="render-dual-left-title" class="font-bold text-[11px] sm:text-xs text-amber-300 font-battambang">
-                                            🍌 ក្រុមដំណាប់ចេកស្ងួត
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-center my-0.5 shrink-0">
-                                        <div id="left-column-svg-icon" class="w-16 h-12 flex items-center justify-center"></div>
-                                    </div>
-                                    <div class="space-y-1 text-[9.5px] sm:text-[10.5px] font-bold text-amber-100/90 leading-snug">
-                                        <div id="render-dual-left-1" class="bg-amber-900/40 p-1 rounded border border-amber-500/30">1. រសជាតិដើម — 10,000៛</div>
-                                        <div id="render-dual-left-2" class="bg-amber-900/40 p-1 rounded border border-amber-500/30">2. រោយល្ង សខ្មៅ — 10,000៛</div>
-                                        <div id="render-dual-left-3" class="bg-amber-900/40 p-1 rounded border border-amber-500/30">3. រោយអាល់ម៉ុន — 12,000៛</div>
-                                        <div id="render-dual-left-4" class="bg-amber-900/40 p-1 rounded border border-amber-500/30">4. ធញ្ញជាតិគ្រប់មុខ — 12,000៛</div>
-                                        <div id="render-dual-left-5" class="bg-amber-900/40 p-1 rounded border border-amber-500/30">5. រោយកំទេចដូង — 12,000៛</div>
-                                    </div>
-                                    <div class="mt-1 text-center">
-                                        <span class="bg-amber-500 text-slate-950 font-extrabold text-[8px] px-2 py-0.5 rounded-full uppercase">
-                                            ទម្ងន់ 200g / កញ្ចប់
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- RIGHT COLUMN: CRISPY BANANA CHIPS -->
-                                <div class="bg-gradient-to-b from-red-950/80 to-slate-950/90 border border-red-500/50 rounded-xl p-2 flex flex-col justify-between backdrop-blur-sm shadow-md">
-                                    <div class="border-b border-red-500/40 pb-1 mb-1 text-center">
-                                        <div id="render-dual-right-title" class="font-bold text-[11px] sm:text-xs text-yellow-300 font-battambang">
-                                            🍟 ក្រុមចេកបំពងស្រួយ
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-center my-0.5 shrink-0">
-                                        <div id="right-column-svg-icon" class="w-16 h-12 flex items-center justify-center"></div>
-                                    </div>
-                                    <div class="space-y-1 text-[9.5px] sm:text-[10.5px] font-bold text-yellow-100/90 leading-snug">
-                                        <div id="render-dual-right-1" class="bg-red-900/40 p-1 rounded border border-red-500/30">🍫 រសជាតិសូកូឡា</div>
-                                        <div id="render-dual-right-2" class="bg-red-900/40 p-1 rounded border border-red-500/30">🥛 រសជាតិទឹកដោះគោ</div>
-                                        <div id="render-dual-right-3" class="bg-red-900/40 p-1 rounded border border-red-500/30">🧀 ឈីសទឹកដោះគោ</div>
-                                        <div id="render-dual-right-4" class="bg-red-900/40 p-1 rounded border border-red-500/30">🍢 គ្រឿងបាប៊ីឃ្យូ (BBQ)</div>
-                                        <div id="render-dual-right-5" class="bg-red-900/40 p-1 rounded border border-red-500/30">🌶️ គ្រឿងឥណ្ឌូណេស៊ីហឹរ</div>
-                                    </div>
-                                    <div class="mt-1 text-center">
-                                        <span class="bg-red-500 text-white font-extrabold text-[8px] px-2 py-0.5 rounded-full uppercase">
-                                            ស្រួយៗ ក្រឡុកគ្រឿងដិត
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <!-- SINGLE MODE WITH STICKER OVERLAYS -->
-                            <div id="single-mode-view" class="w-full h-full flex items-center justify-center relative">
-                                
-                                <!-- Floating Sticker Badges Overlay -->
-                                <div id="sticker-badge-crispy" class="absolute top-1 left-2 z-20 bg-gradient-to-tr from-amber-500 to-yellow-400 text-slate-950 font-black text-[9px] px-2 py-1 rounded-full shadow-lg border border-white transform -rotate-6 flex items-center gap-1">
-                                    <span>⭐ 100% ស្រួយពិសេស</span>
-                                </div>
-
-                                <div id="sticker-badge-seasoning" class="absolute bottom-2 left-2 z-20 bg-gradient-to-tr from-red-600 to-orange-500 text-white font-black text-[9px] px-2 py-1 rounded-full shadow-lg border border-yellow-300 transform rotate-3 flex items-center gap-1">
-                                    <span>🔥 ក្រឡុកគ្រឿងដិត</span>
-                                </div>
-
-                                <div id="sticker-badge-khmer" class="absolute top-1 right-2 z-20 bg-gradient-to-tr from-emerald-600 to-teal-500 text-white font-black text-[9px] px-2 py-1 rounded-full shadow-lg border border-white transform rotate-6 flex items-center gap-1">
-                                    <span>❤️ ផលិតផលកូនខ្មែរ</span>
-                                </div>
-
-                                <!-- Central Graphic / Custom Uploaded Image Display -->
-                                <div id="food-display-wrapper" class="relative z-10 flex items-center justify-center animate-float max-h-full">
-                                    <!-- Dynamic SVG or Uploaded Photo inserted by JS -->
-                                </div>
-
-                                <!-- Floating Price Badge -->
-                                <div id="floating-price-badge" class="absolute bottom-1 right-2 z-20 bg-gradient-to-tr from-amber-600 to-red-700 text-white p-2 rounded-full shadow-2xl border-2 border-yellow-300 transform -rotate-12 flex flex-col items-center justify-center w-20 h-20 text-center">
-                                    <span id="render-price-label" class="text-[8px] uppercase font-bold text-yellow-200">SPECIAL</span>
-                                    <span id="render-price-val" class="font-koulen text-base text-yellow-300 leading-none my-0.5">10,000</span>
-                                    <span id="render-price-unit" class="text-[8px] font-bold text-white">រៀល</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <!-- BOTTOM SECTION: Features & Footer Bar -->
-                        <div class="space-y-1.5 relative z-10 shrink-0">
-                            <div id="feature-bullets-bar" class="flex items-center justify-center gap-1.5 bg-slate-900/90 backdrop-blur py-1 px-2 rounded-full border border-amber-400/40 text-[9px] font-bold text-amber-300 shadow-md">
-                                <span>🍌 បន្ទះចេកស្រួយៗ</span>
-                                <span class="text-slate-600">|</span>
-                                <span>🍟 ក្រឡុកគ្រឿងដិត</span>
-                                <span class="text-slate-600">|</span>
-                                <span>❤️ ផលិតផលកូនខ្មែរ</span>
-                            </div>
-
-                            <!-- Footer App & Delivery Bar -->
-                            <div id="footer-availability-bar" class="bg-slate-950/95 p-1.5 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
-                                <div class="flex items-center gap-1">
-                                    <span id="badge-grab" class="bg-emerald-600 text-white px-1.5 py-0.5 rounded font-bold text-[8px] flex items-center gap-1">
-                                        <i class="fa-solid fa-motorcycle"></i> Grab
-                                    </span>
-                                    <span id="badge-foodpanda" class="bg-pink-600 text-white px-1.5 py-0.5 rounded font-bold text-[8px] flex items-center gap-1">
-                                        <i class="fa-solid fa-bag-shopping"></i> Panda
-                                    </span>
-                                    <span id="badge-eget" class="bg-red-600 text-white px-1.5 py-0.5 rounded font-bold text-[8px] flex items-center gap-1">
-                                        E-Get
-                                    </span>
-                                </div>
-
-                                <div class="text-right">
-                                    <div id="render-phone" class="font-bold text-amber-400 text-[10px]">📞 088 929 9948</div>
-                                    <div id="render-telegram" class="text-[8px] text-slate-400">Telegram: @KhmerBanana</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-        </main>
+    <!-- ADMIN PANEL (កន្លែងសម្រាប់កែឈ្មោះ តម្លៃ និងរូបភាពផ្ទាល់) -->
+    <div id="admin-panel">
+      <h2>⚙️ ប្រព័ន្ធកែសម្រួលទំនិញ (Admin Dashboard)</h2>
+      <p style="font-size:0.75rem; color:#ccc; margin-bottom: 10px;">បងអាចកែសម្រួលឈ្មោះ តម្លៃ និងតំណរូបភាព Link រួចចុច Save នោះវានឹងដូរភ្លាមៗ!</p>
+      <div id="admin-editor-list"></div>
     </div>
 
-    <!-- POP-UP FULL PREVIEW MODAL WITH QUICK EDIT MENU -->
-    <div id="full-preview-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex flex-col md:flex-row items-center justify-center p-3 hidden overflow-y-auto">
-        
-        <!-- Close Button Top Right -->
-        <button onclick="closeFullPreviewModal()" class="absolute top-3 right-4 bg-red-600 hover:bg-red-500 text-white w-9 h-9 rounded-full flex items-center justify-center shadow-lg z-50 text-base font-bold transition">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-
-        <!-- Container Layout inside Modal -->
-        <div class="w-full max-w-5xl flex flex-col md:flex-row items-center justify-center gap-6 my-auto">
-            
-            <!-- Large Poster View Box -->
-            <div id="modal-poster-container" class="w-full md:w-1/2 flex items-center justify-center p-2 shrink-0">
-                <div id="modal-poster-viewport" class="poster-viewport-box relative shadow-2xl rounded-2xl overflow-hidden flex flex-col justify-between select-none border border-amber-400/50" style="aspect-ratio: 1/1; max-width: 420px; width: 100%;">
-                    <!-- Dynamic rendering mirrored here -->
-                </div>
-            </div>
-
-            <!-- Quick Edit Panel Side Bar inside Modal -->
-            <div class="w-full md:w-1/2 bg-app-card border border-app rounded-2xl p-4 text-app space-y-3 shadow-2xl max-h-[85vh] overflow-y-auto">
-                <div class="border-b border-app pb-2 flex items-center justify-between">
-                    <div>
-                        <h3 class="font-extrabold text-sm text-amber-400 font-battambang flex items-center gap-1.5">
-                            <i class="fa-solid fa-pen-to-square"></i> Quick Edit - កែប្រែរហ័ស
-                        </h3>
-                        <p class="text-[10px] text-app-muted">កែសម្រួលអក្សរ និងផ្លាកតម្លៃដោយមើលឃើញផ្សាយផ្ទាល់</p>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-[11px] font-bold text-amber-400 block">ចំណងជើងធំ ជួរទី ១</label>
-                    <input type="text" id="modal-input-head-1" oninput="syncModalInput('input-head-1', this.value)" class="w-full bg-black/30 border border-app rounded-lg px-3 py-1.5 text-xs text-app font-bold">
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-[11px] font-bold text-yellow-400 block">ចំណងជើង ជួរទី ២</label>
-                    <input type="text" id="modal-input-head-2" oninput="syncModalInput('input-head-2', this.value)" class="w-full bg-black/30 border border-app rounded-lg px-3 py-1.5 text-xs text-app font-bold">
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[10px] font-bold text-amber-300 block mb-1">ពពុះនិយាយ Speech</label>
-                        <input type="text" id="modal-input-bubble" oninput="syncModalInput('input-bubble', this.value)" class="w-full bg-black/30 border border-app rounded-lg px-2.5 py-1.5 text-xs text-app font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-amber-300 block mb-1">លេខទូរស័ព្ទ</label>
-                        <input type="text" id="modal-input-phone" oninput="syncModalInput('input-phone', this.value)" class="w-full bg-black/30 border border-app rounded-lg px-2.5 py-1.5 text-xs text-app font-bold">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 pt-1">
-                    <button onclick="exportPosterHD()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition">
-                        <i class="fa-solid fa-download"></i> ទាញយករូប HD
-                    </button>
-                    <button onclick="closeFullPreviewModal()" class="w-full bg-app-header border border-app text-app hover:bg-black/20 font-bold py-2 rounded-xl text-xs transition">
-                        បិទផ្ទាំងនេះ
-                    </button>
-                </div>
-            </div>
-
-        </div>
+    <!-- 1. CHECK-IN SECTION -->
+    <div class="reward-card">
+      <div class="reward-header">
+        <div class="reward-title">🎁 Daily Check-in (សន្សំកាក់)</div>
+        <div class="coin-badge">💰 កាក់សរុប: <span id="user-coins">0</span></div>
+      </div>
+      <div style="font-size:0.75rem; color:#ccc;">Check-in រាល់ថ្ងៃដើម្បីទទួលបាន ១០០ កាក់!</div>
+      
+      <div class="checkin-days">
+        <div class="day-box active">ថ្ងៃ 1<span class="pts">+100</span></div>
+        <div class="day-box">ថ្ងៃ 2<span class="pts">+100</span></div>
+        <div class="day-box">ថ្ងៃ 3<span class="pts">+100</span></div>
+        <div class="day-box">ថ្ងៃ 4<span class="pts">+100</span></div>
+        <div class="day-box">ថ្ងៃ 5<span class="pts">+100</span></div>
+        <div class="day-box">ថ្ងៃ 6<span class="pts">+100</span></div>
+        <div class="day-box">ថ្ងៃ 7<span class="pts">+300</span></div>
+      </div>
+      <button class="btn-checkin" id="checkin-btn" onclick="doCheckIn()">ចុច Check-in យក ១០០ កាក់ថ្ងៃនេះ</button>
     </div>
 
-    <!-- Export Canvas Engine -->
-    <canvas id="export-canvas" class="hidden"></canvas>
+    <!-- 2. HERO BANNER -->
+    <div class="hero-banner-large">
+      <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?w=800" alt="MoMore Banner" class="hero-banner-media">
+      <div class="hero-banner-overlay">
+        <h1>MoMore Wholesale (តម្លៃបោះដុំ)</h1>
+        <p>ប្រព័ន្ធបញ្ជាទិញបោះដុំផ្ទាល់ពីរោងចក្រ គុណភាពខ្ពស់!</p>
+      </div>
+    </div>
 
-    <script>
-        // High Quality SVG Vector Graphics tailored for Crispy Shaken Banana Chips & Whole Bananas
-        const productSVGs = {
-            // Option 1: Crispy Fried Banana Slices with Powder Shaker & Flavors (ចេកបំពងស្រួយក្រឡុកគ្រឿង)
-            crispyChips: `<svg width="220" height="170" viewBox="0 0 300 230" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter drop-shadow-2xl">
-                    <!-- Snack Plate / Bowl -->
-                    <ellipse cx="150" cy="165" rx="120" ry="45" fill="#450a0a" stroke="#dc2626" stroke-width="4"/>
-                    <ellipse cx="150" cy="160" rx="110" ry="38" fill="#78350f"/>
-                    
-                    <!-- Crispy Thin Banana Slices / Chips Heap -->
-                    <!-- Chip 1 -->
-                    <ellipse cx="90" cy="150" rx="30" ry="16" fill="#facc15" stroke="#d97706" stroke-width="3" transform="rotate(-15 90 150)"/>
-                    <!-- Chip 2 -->
-                    <ellipse cx="130" cy="140" rx="35" ry="18" fill="#fef08a" stroke="#d97706" stroke-width="3" transform="rotate(10 130 140)"/>
-                    <!-- Chip 3 -->
-                    <ellipse cx="170" cy="145" rx="32" ry="17" fill="#facc15" stroke="#b45309" stroke-width="3" transform="rotate(-8 170 145)"/>
-                    <!-- Chip 4 -->
-                    <ellipse cx="205" cy="155" rx="28" ry="15" fill="#fef08a" stroke="#d97706" stroke-width="3" transform="rotate(22 205 155)"/>
-                    <!-- Top Chip Stack -->
-                    <ellipse cx="150" cy="130" rx="38" ry="20" fill="#facc15" stroke="#b45309" stroke-width="4" transform="rotate(-4 150 130)"/>
-                    
-                    <!-- Seasoning Powder Dusting & Shaken Particles (ម្ទេស & ឈីស & គ្រឿង) -->
-                    <!-- Chili red dusting -->
-                    <circle cx="140" cy="125" r="3" fill="#dc2626"/>
-                    <circle cx="155" cy="132" r="2.5" fill="#ef4444"/>
-                    <circle cx="165" cy="128" r="3" fill="#dc2626"/>
-                    <circle cx="125" cy="135" r="2" fill="#ef4444"/>
-                    
-                    <!-- Shaker Bottle Graphic (គ្រឿងក្រឡុក) -->
-                    <g transform="translate(210, 45) rotate(25)">
-                        <rect x="0" y="20" width="36" height="55" rx="6" fill="#f8fafc" stroke="#334155" stroke-width="3"/>
-                        <rect x="4" y="0" width="28" height="20" rx="3" fill="#dc2626"/>
-                        <circle cx="12" cy="6" r="1.5" fill="#ffffff"/>
-                        <circle cx="18" cy="6" r="1.5" fill="#ffffff"/>
-                        <circle cx="24" cy="6" r="1.5" fill="#ffffff"/>
-                        <text x="18" y="50" font-family="Battambang" font-weight="900" font-size="10" fill="#dc2626" text-anchor="middle">គ្រឿង</text>
-                    </g>
-                    
-                    <!-- Floating Flying Crispy Banana Slice Graphics -->
-                    <ellipse cx="45" cy="80" rx="24" ry="12" fill="#fef08a" stroke="#d97706" stroke-width="3" transform="rotate(-35 45 80)"/>
-                    <ellipse cx="250" cy="90" rx="22" ry="11" fill="#facc15" stroke="#b45309" stroke-width="3" transform="rotate(28 250 90)"/>
-                  </svg>`,
+    <!-- SECTION 1: DOMNAP -->
+    <div class="section-title-box">
+      <div class="sec-title-main">1. ដំណាប់ចេកណាំវ៉ាខ្មែរ</div>
+      <div class="sec-title-sub">សាច់ទន់ស្វិត សម្ងួតអនាម័យស្តង់ដារ</div>
+    </div>
+    <div class="grid" id="domnap-container"></div>
 
-            // Option 2: Whole Fresh Banana Bunch + Crispy Chips (ចេកស្និត & បន្ទះចេកហោះ)
-            bananaBunchChips: `<svg width="220" height="170" viewBox="0 0 300 230" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter drop-shadow-2xl">
-                    <!-- Whole Yellow Banana Bunch (ចេកស្និត) -->
-                    <path d="M70 120 C 100 60, 190 60, 220 120 C 180 90, 110 90, 70 120 Z" fill="#eab308" stroke="#ca8a04" stroke-width="4"/>
-                    <path d="M80 135 C 110 75, 200 75, 230 135 C 190 105, 120 105, 80 135 Z" fill="#facc15" stroke="#ca8a04" stroke-width="4"/>
-                    <path d="M60 145 C 90 90, 180 90, 210 145 C 170 115, 100 115, 60 145 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="4"/>
-                    <!-- Green Stem -->
-                    <path d="M140 70 L 160 70 L 155 50 L 145 50 Z" fill="#15803d"/>
-                    
-                    <!-- Scattered Crispy Fried Banana Slices -->
-                    <ellipse cx="80" cy="170" rx="28" ry="14" fill="#facc15" stroke="#b45309" stroke-width="3" transform="rotate(-20 80 170)"/>
-                    <ellipse cx="150" cy="175" rx="32" ry="16" fill="#fef08a" stroke="#d97706" stroke-width="3" transform="rotate(5 150 175)"/>
-                    <ellipse cx="220" cy="165" rx="26" ry="13" fill="#facc15" stroke="#b45309" stroke-width="3" transform="rotate(25 220 165)"/>
-                  </svg>`,
+    <!-- SECTION 2: CRISPY BANANA -->
+    <div class="section-title-box">
+      <div class="sec-title-main">2. ចេកបំពងស្រួយ ម៉ូម័រ MoMore</div>
+      <div class="sec-title-sub">ស្រួយស្រែស ឈ្ងុយឆ្ងាញ់គ្រប់រសជាតិ</div>
+    </div>
+    <div class="grid" id="crispy-container"></div>
 
-            // Option 3: Premium Packaging Zipper Pouch (ថង់ចេកបំពងស្រួយ 3D)
-            pouchSnack: `<svg width="200" height="170" viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter drop-shadow-2xl">
-                    <path d="M40 30 L210 30 L225 220 C225 235, 25 235, 25 220 Z" fill="#dc2626" stroke="#991b1b" stroke-width="6"/>
-                    <rect x="50" y="65" width="150" height="110" rx="12" fill="#facc15"/>
-                    <text x="125" y="105" font-family="Moul" font-size="16" fill="#78350f" text-anchor="middle">ចេកបំពងស្រួយ</text>
-                    <text x="125" y="135" font-family="Battambang" font-weight="900" font-size="12" fill="#dc2626" text-anchor="middle">ក្រឡុកគ្រឿងដិត</text>
-                    <ellipse cx="30" cy="100" rx="20" ry="10" fill="#fef08a" transform="rotate(-25 30 100)" stroke="#d97706" stroke-width="2"/>
-                    <ellipse cx="220" cy="120" rx="22" ry="11" fill="#fef08a" transform="rotate(20 220 120)" stroke="#d97706" stroke-width="2"/>
-                  </svg>`,
+    <!-- SECTION 3: CHECKOUT FORM -->
+    <div class="section-title-box">
+      <div class="sec-title-main">3. ព័ត៌មានដឹកជញ្ជូន & បញ្ជូនការកុម្ម៉ង់</div>
+    </div>
 
-            // Option 4: Dried Bananas in Wooden Tray
-            driedBanana: `<svg width="200" height="160" viewBox="0 0 300 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="filter drop-shadow-2xl">
-                    <ellipse cx="150" cy="160" rx="130" ry="60" fill="#78350f" stroke="#451a03" stroke-width="6"/>
-                    <ellipse cx="150" cy="155" rx="118" ry="48" fill="#a16207"/>
-                    <rect x="70" y="130" width="160" height="22" rx="11" fill="#d97706" transform="rotate(-12 150 140)"/>
-                    <rect x="65" y="145" width="170" height="24" rx="12" fill="#b45309" transform="rotate(-4 150 150)"/>
-                    <rect x="75" y="160" width="150" height="22" rx="11" fill="#d97706" transform="rotate(8 150 160)"/>
-                    <circle cx="100" cy="140" r="3" fill="#ffffff"/>
-                    <circle cx="120" cy="142" r="3" fill="#1e293b"/>
-                    <circle cx="160" cy="150" r="4" fill="#fef08a"/>
-                  </svg>`,
+    <div class="form-section">
+      <div class="form-group">
+        <label>📞 លេខទូរស័ព្ទទទួលទំនិញ *</label>
+        <input type="tel" id="cust-phone" placeholder="ឧទាហរណ៍៖ 012 345 678">
+      </div>
+      <div class="form-group">
+        <label>📍 រាជធានី / ខេត្ត *</label>
+        <input type="text" id="cust-province" placeholder="ឧទាហរណ៍៖ ភ្នំពេញ, បាត់ដំបង">
+      </div>
+      <div class="form-group">
+        <label>🚚 ក្រុមហ៊ុនដឹកជញ្ជូន</label>
+        <select id="courier-select">
+          <option value="វីរៈ ប៊ុនថាំ">វីរៈ ប៊ុនថាំ (Virak Buntham)</option>
+          <option value="J&T Express">J&T Express</option>
+          <option value="Flash Express">Flash Express</option>
+          <option value="ដឹកជញ្ជូនរហ័ស">ដឹកជញ្ជូនរហ័ស (ក្នុងភ្នំពេញ)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>🏢 សាខា ឬ អាសយដ្ឋានលម្អិត</label>
+        <textarea id="cust-branch" rows="2" placeholder="ឈ្មោះសាខា ឬផ្ទះលេខ ផ្លូវ..."></textarea>
+      </div>
+    </div>
 
-            smallDriedSVG: `<svg width="60" height="45" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="100" cy="100" rx="90" ry="40" fill="#78350f"/>
-                    <rect x="40" y="85" width="120" height="16" rx="8" fill="#d97706" transform="rotate(-6 100 90)"/>
-                    <circle cx="70" cy="90" r="2" fill="#ffffff"/>
-                  </svg>`,
+  </div>
 
-            smallCrispySVG: `<svg width="60" height="45" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="100" cy="100" rx="80" ry="30" fill="#78350f"/>
-                    <ellipse cx="80" cy="95" rx="25" ry="12" fill="#facc15" stroke="#d97706" stroke-width="2"/>
-                    <ellipse cx="120" cy="90" rx="28" ry="14" fill="#fef08a" stroke="#d97706" stroke-width="2"/>
-                  </svg>`
-        };
+  <!-- Cart Bar -->
+  <div class="cart-bar">
+    <div>
+      <div style="font-size:0.75rem; color:#aaa;">សរុបសាច់ប្រាក់:</div>
+      <div class="total-price"><span id="total-val">0</span> ៛</div>
+    </div>
+    <button class="btn-checkout" onclick="submitOrder()">ផ្ញើចូល Telegram 🚀</button>
+  </div>
 
-        // State Management
-        const state = {
-            aspectRatio: '1:1',
-            presetStyle: 'crispy-banana-flavors',
-            productIconKey: 'crispyChips',
-            uploadedImageSrc: null,
-            
-            head1: 'ចេកបំពងស្រួយ ក្រឡុកគ្រឿង',
-            head2: 'សូកូឡា • ទឹកដោះគោ • ឈីស • គ្រឿង BBQ • ហឹរ',
-            bubbleText: '🍟 ចេកបន្ទះបំពងស្រួយៗ ក្រឡុកគ្រឿងដិតឈ្ងុយឆ្ងាញ់!',
-            font1: 'font-moul',
-            fontSize1: 30,
-            
-            priceLabel: 'SPECIAL',
-            priceVal: '10,000',
-            priceUnit: 'រៀល',
-            
-            phone: '📞 កុម្ម៉ង់: 088 929 9948 / 087 258 800',
-            telegram: 'Telegram: @KhmerBananaOfficial',
-            bgColor1: '#991b1b',
-            bgColor2: '#450a0a',
-            
-            // Sticker Overlays
-            stickerCrispy: true,
-            stickerSeasoning: true,
-            stickerKhmer: true,
-            floatingChips: true,
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-            // Dual Split View State
-            showDualSplit: false,
-            dualLeftTitle: '🍌 ក្រុមដំណាប់ចេកស្ងួត',
-            dualLeft1: '1. រសជាតិដើម — 10,000៛ / 200g',
-            dualLeft2: '2. រោយល្ង សខ្មៅ — 10,000៛ / 200g',
-            dualLeft3: '3. រោយអាល់ម៉ុន — 12,000៛ / 200g',
-            dualLeft4: '4. ធញ្ញជាតិគ្រប់មុខ — 12,000៛ / 200g',
-            dualLeft5: '5. រោយកំទេចដូង — 12,000៛ / 200g',
+    // បញ្ជីផលិតផល (អាចរក្សាទុកក្នុង LocalStorage ពេល Admin កែសម្រួល)
+    let defaultProducts = {
+      D_ORIG200: { type: "ដំណាប់ចេក", flavor: "រសជាតិដើម", price: 8000, qty: 0, size: '200g', category: 'domnap', img: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400' },
+      D_SESM200: { type: "ដំណាប់ចេក", flavor: "រោយល្ង ស/ខ្មៅ", price: 8000, qty: 0, size: '200g', category: 'domnap', img: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400' },
+      C_ORIG500: { type: "ចេកបំពងស្រួយ", flavor: "រសជាតិដើមសាប", price: 10000, qty: 0, size: '500g', category: 'crispy', img: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400' },
+      C_CHOC200: { type: "ចេកបំពងស្រួយ", flavor: "សូកូឡាដោះគោ", price: 10000, qty: 0, size: '200g', category: 'crispy', img: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400' }
+    };
 
-            dualRightTitle: '🍟 ក្រុមចេកបំពងស្រួយ',
-            dualRight1: '🍫 រសជាតិសូកូឡា (Chocolate)',
-            dualRight2: '🥛 រសជាតិទឹកដោះគោ (Sweet Milk)',
-            dualRight3: '🧀 ឈីសទឹកដោះគោ (Cheese Milk)',
-            dualRight4: '🍢 គ្រឿងបាប៊ីឃ្យូ (Barbecue BBQ)',
-            dualRight5: '🌶️ គ្រឿងឥណ្ឌូណេស៊ីហឹរផ្អែម',
+    let products = JSON.parse(localStorage.getItem('momore_products')) || defaultProducts;
+    let userCoins = parseInt(localStorage.getItem('momore_coins') || '0');
+    let lastCheckin = localStorage.getItem('momore_last_checkin');
 
-            showGrab: true,
-            showFoodpanda: true,
-            showEget: true
-        };
+    function toggleAdminPanel() {
+      const panel = document.getElementById('admin-panel');
+      if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+      } else {
+        panel.style.display = 'block';
+        renderAdminEditor();
+      }
+    }
 
-        window.onload = function() {
-            renderPoster();
-        };
+    function renderAdminEditor() {
+      const container = document.getElementById('admin-editor-list');
+      container.innerHTML = '';
+      for (let key in products) {
+        let p = products[key];
+        container.innerHTML += `
+          <div class="admin-item-row">
+            <label>ឈ្មោះរសជាតិ (${key}):</label>
+            <input type="text" id="adm-flavor-${key}" value="${p.flavor}">
+            <label>តម្លៃ (រៀល):</label>
+            <input type="number" id="adm-price-${key}" value="${p.price}">
+            <label>Link រូបភាព (Image URL):</label>
+            <input type="text" id="adm-img-${key}" value="${p.img}">
+            <button class="btn-save-admin" onclick="saveProduct('${key}')">រក្សាទុកការកែប្រែ</button>
+          </div>
+        `;
+      }
+    }
 
-        function toggleThemeMenu() {
-            document.getElementById('theme-menu').classList.toggle('hidden');
+    function saveProduct(key) {
+      products[key].flavor = document.getElementById(`adm-flavor-${key}`).value;
+      products[key].price = parseInt(document.getElementById(`adm-price-${key}`).value) || 0;
+      products[key].img = document.getElementById(`adm-img-${key}`).value;
+      
+      localStorage.setItem('momore_products', JSON.stringify(products));
+      renderProducts();
+      alert("✅ រក្សាទុកបានជោគជ័យ!");
+    }
+
+    function renderProducts() {
+      const domnapContainer = document.getElementById('domnap-container');
+      const crispyContainer = document.getElementById('crispy-container');
+      domnapContainer.innerHTML = '';
+      crispyContainer.innerHTML = '';
+
+      for (let key in products) {
+        let p = products[key];
+        const cardHtml = `
+          <div class="product-card">
+            <div class="media-box">
+              <img src="${p.img}" alt="${p.type}" onerror="this.src='https://images.unsplash.com/photo-1528825871115-3581a5387919?w=400'">
+            </div>
+            <div class="product-info">
+              <div>
+                <div class="row-1-type">${p.type}</div>
+                <div class="row-2-flavor">${p.flavor}</div>
+                <div class="row-3-price-weight">
+                  <span class="price-tag">${p.price.toLocaleString()} ៛</span>
+                  <span class="weight-tag">(${p.size})</span>
+                </div>
+              </div>
+              <div class="quantity-control">
+                <button class="btn-qty" onclick="changeQty('${key}', -1)">-</button>
+                <span class="qty-number" id="qty-${key}">${p.qty}</span>
+                <button class="btn-qty" onclick="changeQty('${key}', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+        if (p.category === 'domnap') domnapContainer.innerHTML += cardHtml;
+        else crispyContainer.innerHTML += cardHtml;
+      }
+    }
+
+    function changeQty(key, amount) {
+      products[key].qty += amount;
+      if (products[key].qty < 0) products[key].qty = 0;
+      document.getElementById(`qty-${key}`).innerText = products[key].qty;
+      calculateTotal();
+    }
+
+    function calculateTotal() {
+      let total = 0;
+      for (let key in products) { total += products[key].qty * products[key].price; }
+      document.getElementById('total-val').innerText = total.toLocaleString();
+      return total;
+    }
+
+    function doCheckIn() {
+      const today = new Date().toDateString();
+      if (lastCheckin !== today) {
+        userCoins += 100;
+        localStorage.setItem('momore_coins', userCoins);
+        localStorage.setItem('momore_last_checkin', today);
+        document.getElementById('user-coins').innerText = userCoins;
+        document.getElementById('checkin-btn').innerText = "បាន Check-in រួចរាល់ថ្ងៃនេះ! (+100 កាក់)";
+        document.getElementById('checkin-btn').disabled = true;
+        alert("🎉 អបអរសាទរ! អ្នកទទួលបាន ១០០ កាក់សម្រាប់ការ Check-in ថ្ងៃនេះ!");
+      }
+    }
+
+    function submitOrder() {
+      let total = calculateTotal();
+      if (total === 0) { alert("សូមជ្រើសរើសចំនួនទំនិញយ៉ាងហោចណាស់ ១!"); return; }
+
+      const phone = document.getElementById('cust-phone').value.trim();
+      const province = document.getElementById('cust-province').value.trim();
+      const courier = document.getElementById('courier-select').value;
+      const branch = document.getElementById('cust-branch').value.trim();
+
+      if (!phone || !province) { alert("សូមបំពេញលេខទូរស័ព្ទ និង ខេត្ត/ក្រុង!"); return; }
+
+      let orderDetails = "🛍️ **កុម្ម៉ង់ទំនិញថ្មីពី MoMore** 🛍️\n\n";
+      for (let key in products) {
+        if (products[key].qty > 0) {
+          let p = products[key];
+          orderDetails += `▪️ ${p.type} (${p.flavor} - ${p.size}) x ${p.qty} = ${(p.qty * p.price).toLocaleString()} ៛\n`;
         }
+      }
+      orderDetails += `\n💰 **សរុបទឹកប្រាក់:** ${total.toLocaleString()} ៛`;
+      orderDetails += `\n📞 **ទូរស័ព្ទ:** ${phone}`;
+      orderDetails += `\n📍 **ខេត្ត/ក្រុង:** ${province}`;
+      orderDetails += `\n🚚 **ក្រុមហ៊ុនដឹក:** ${courier} (${branch || 'គ្មានសាខា'})`;
 
-        function changeAppTheme(themeName) {
-            document.body.className = `${themeName} h-screen flex flex-col overflow-hidden bg-app text-app`;
-            toggleThemeMenu();
-        }
+      const encodedText = encodeURIComponent(orderDetails);
+      const adminUsername = "MoMore_collection"; 
+      window.open(`https://t.me/${adminUsername}?text=${encodedText}`, '_blank');
+    }
 
-        function openFullPreviewModal() {
-            document.getElementById('full-preview-modal').classList.remove('hidden');
-            syncModalValues();
-        }
-
-        function closeFullPreviewModal() {
-            document.getElementById('full-preview-modal').classList.add('hidden');
-        }
-
-        function syncModalValues() {
-            document.getElementById('modal-input-head-1').value = state.head1;
-            document.getElementById('modal-input-head-2').value = state.head2;
-            document.getElementById('modal-input-bubble').value = state.bubbleText;
-            document.getElementById('modal-input-phone').value = state.phone;
-            
-            const liveViewport = document.getElementById('poster-viewport');
-            const modalViewport = document.getElementById('modal-poster-viewport');
-            modalViewport.innerHTML = liveViewport.innerHTML;
-            modalViewport.style.aspectRatio = liveViewport.style.aspectRatio;
-        }
-
-        function syncModalInput(originalInputId, value) {
-            document.getElementById(originalInputId).value = value;
-            renderPoster();
-            syncModalValues();
-        }
-
-        function switchTab(tabName) {
-            ['style', 'graphics', 'text', 'dual', 'footer'].forEach(t => {
-                const contentEl = document.getElementById(`tab-${t}`);
-                const btnEl = document.getElementById(`tab-btn-${t}`);
-                if (contentEl && btnEl) {
-                    if (t === tabName) {
-                        contentEl.classList.remove('hidden');
-                        btnEl.classList.add('text-amber-400', 'border-amber-400');
-                        btnEl.classList.remove('text-app-muted', 'border-transparent');
-                    } else {
-                        contentEl.classList.add('hidden');
-                        btnEl.classList.remove('text-amber-400', 'border-amber-400');
-                        btnEl.classList.add('text-app-muted', 'border-transparent');
-                    }
-                }
-            });
-        }
-
-        function setAspectRatio(ratio) {
-            state.aspectRatio = ratio;
-            const viewport = document.getElementById('poster-viewport');
-            const dimLabel = document.getElementById('canvas-dimensions-label');
-            
-            ['1:1', '4:5', '9:16'].forEach(r => {
-                const btn = document.getElementById(`ratio-${r}`);
-                if (r === ratio) {
-                    btn.className = 'px-2.5 py-1.5 rounded-lg transition-all bg-amber-500 text-slate-950 font-extrabold';
-                } else {
-                    btn.className = 'px-2.5 py-1.5 rounded-lg transition-all text-app-muted hover:text-app';
-                }
-            });
-
-            if (ratio === '1:1') {
-                viewport.style.aspectRatio = '1 / 1';
-                viewport.style.maxWidth = '440px';
-                dimLabel.innerText = '1080 x 1080 px';
-            } else if (ratio === '4:5') {
-                viewport.style.aspectRatio = '4 / 5';
-                viewport.style.maxWidth = '360px';
-                dimLabel.innerText = '1080 x 1350 px';
-            } else if (ratio === '9:16') {
-                viewport.style.aspectRatio = '9 / 16';
-                viewport.style.maxWidth = '290px';
-                dimLabel.innerText = '1080 x 1920 px';
-            }
-
-            if (!document.getElementById('full-preview-modal').classList.contains('hidden')) {
-                syncModalValues();
-            }
-        }
-
-        function setProductIconKey(key) {
-            state.productIconKey = key;
-            state.uploadedImageSrc = null; // Reset user image to show vector
-            document.getElementById('upload-status').classList.add('hidden');
-            document.getElementById('remove-upload-btn').classList.add('hidden');
-            renderPoster();
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    state.uploadedImageSrc = e.target.result;
-                    document.getElementById('upload-status').classList.remove('hidden');
-                    document.getElementById('remove-upload-btn').classList.remove('hidden');
-                    renderPoster();
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeUploadedImage() {
-            state.uploadedImageSrc = null;
-            document.getElementById('user-image-upload').value = '';
-            document.getElementById('upload-status').classList.add('hidden');
-            document.getElementById('remove-upload-btn').classList.add('hidden');
-            renderPoster();
-        }
-
-        function applyStylePreset(preset) {
-            state.presetStyle = preset;
-            const head1El = document.getElementById('render-head-1');
-
-            if (preset === 'crispy-banana-flavors') {
-                state.showDualSplit = false;
-                state.productIconKey = 'crispyChips';
-                state.bgColor1 = '#991b1b';
-                state.bgColor2 = '#450a0a';
-                state.head1 = 'ចេកបំពងស្រួយ ក្រឡុកគ្រឿង';
-                state.head2 = 'សូកូឡា • ទឹកដោះគោ • ឈីស • គ្រឿង BBQ • ហឹរ';
-                state.bubbleText = '🍟 ចេកបន្ទះបំពងស្រួយៗ ក្រឡុកគ្រឿងដិតឈ្ងុយឆ្ងាញ់!';
-                state.priceLabel = 'SPECIAL';
-                state.priceVal = '10,000';
-                state.priceUnit = 'រៀល';
-                head1El.className = 'font-moul text-2xl sm:text-3xl text-white text-3d-bevel-red tracking-wide leading-snug';
-            } else if (preset === 'dual-split-master') {
-                state.showDualSplit = true;
-                state.bgColor1 = '#78350f';
-                state.bgColor2 = '#450a0a';
-                state.head1 = 'ដំណាប់ចេក & ចេកបំពងស្រួយ';
-                state.head2 = 'ផលិតផលចេកខ្មែរធម្មជាតិ • ស្វិតទន់ & ស្រួយឈ្ងុយ';
-                state.bubbleText = '🍌 ដំណាប់ចេកស្ងួត & 🍟 ចេកបំពងស្រួយក្រឡុកគ្រឿង';
-                head1El.className = 'font-moul text-xl sm:text-2xl text-white text-3d-bevel-gold tracking-wide leading-tight';
-            } else if (preset === 'dried-banana-5-flavors') {
-                state.showDualSplit = false;
-                state.productIconKey = 'driedBanana';
-                state.bgColor1 = '#78350f';
-                state.bgColor2 = '#450a0a';
-                state.head1 = 'ដំណាប់ចេកស្ងួត 5 រសជាតិ';
-                state.head2 = 'ចេកទុំសំងួតអគ្គិសនី • ស្វិតទន់ ជូរអែម ធម្មជាតិ 100%';
-                state.bubbleText = '🍌 រសជាតិដើម, រោយល្ង, អាល់ម៉ុន, ធញ្ញជាតិ, រោយដូង';
-                state.priceLabel = 'ចាប់ពី';
-                state.priceVal = '10,000';
-                state.priceUnit = 'រៀល / 200g';
-                head1El.className = 'font-moul text-2xl sm:text-3xl text-white text-3d-bevel-gold tracking-wide leading-snug';
-            } else if (preset === 'dried-nuts-seeds') {
-                state.showDualSplit = false;
-                state.productIconKey = 'driedBanana';
-                state.bgColor1 = '#451a03';
-                state.bgColor2 = '#1c1917';
-                state.head1 = 'ដំណាប់ចេករោយអាល់ម៉ុន';
-                state.head2 = 'រោយចំណិតអាល់ម៉ុន • គ្រាប់ពៅ • គ្រាប់លៀត';
-                state.bubbleText = '🥜 គ្រាប់ធញ្ញជាតិគុណភាពខ្ពស់';
-                state.priceLabel = 'PRICE';
-                state.priceVal = '12,000';
-                state.priceUnit = 'រៀល / 200g';
-                head1El.className = 'font-moul text-2xl sm:text-3xl text-amber-200 drop-shadow-lg tracking-wide leading-snug';
-            }
-
-            // Sync Controls
-            document.getElementById('toggle-dual-split').checked = state.showDualSplit;
-            document.getElementById('input-head-1').value = state.head1;
-            document.getElementById('input-head-2').value = state.head2;
-            document.getElementById('input-bubble').value = state.bubbleText;
-            document.getElementById('input-price-label').value = state.priceLabel;
-            document.getElementById('input-price-val').value = state.priceVal;
-            document.getElementById('input-price-unit').value = state.priceUnit;
-            document.getElementById('bg-color-1').value = state.bgColor1;
-            document.getElementById('bg-color-2').value = state.bgColor2;
-
-            renderPoster();
-        }
-
-        function renderPoster() {
-            state.head1 = document.getElementById('input-head-1').value;
-            state.head2 = document.getElementById('input-head-2').value;
-            state.bubbleText = document.getElementById('input-bubble').value;
-            state.font1 = document.getElementById('font-family-1').value;
-            state.fontSize1 = document.getElementById('font-size-1').value;
-
-            state.priceLabel = document.getElementById('input-price-label').value;
-            state.priceVal = document.getElementById('input-price-val').value;
-            state.priceUnit = document.getElementById('input-price-unit').value;
-
-            state.phone = document.getElementById('input-phone').value;
-            state.telegram = document.getElementById('input-telegram').value;
-
-            state.showGrab = document.getElementById('show-grab').checked;
-            state.showFoodpanda = document.getElementById('show-foodpanda').checked;
-            state.showEget = document.getElementById('show-eget').checked;
-
-            state.showDualSplit = document.getElementById('toggle-dual-split').checked;
-
-            // Sticker overlays
-            state.stickerCrispy = document.getElementById('sticker-crispy').checked;
-            state.stickerSeasoning = document.getElementById('sticker-seasoning').checked;
-            state.stickerKhmer = document.getElementById('sticker-khmer').checked;
-            state.floatingChips = document.getElementById('toggle-floating-chips').checked;
-
-            // Dual split items
-            state.dualLeftTitle = document.getElementById('dual-left-title').value;
-            state.dualLeft1 = document.getElementById('dual-left-item-1').value;
-            state.dualLeft2 = document.getElementById('dual-left-item-2').value;
-            state.dualLeft3 = document.getElementById('dual-left-item-3').value;
-            state.dualLeft4 = document.getElementById('dual-left-item-4').value;
-            state.dualLeft5 = document.getElementById('dual-left-item-5').value;
-
-            state.dualRightTitle = document.getElementById('dual-right-title').value;
-            state.dualRight1 = document.getElementById('dual-right-item-1').value;
-            state.dualRight2 = document.getElementById('dual-right-item-2').value;
-            state.dualRight3 = document.getElementById('dual-right-item-3').value;
-            state.dualRight4 = document.getElementById('dual-right-item-4').value;
-            state.dualRight5 = document.getElementById('dual-right-item-5').value;
-
-            state.bgColor1 = document.getElementById('bg-color-1').value;
-            state.bgColor2 = document.getElementById('bg-color-2').value;
-
-            const bgEl = document.getElementById('poster-bg');
-            bgEl.style.background = `linear-gradient(180deg, ${state.bgColor1} 0%, ${state.bgColor2} 100%)`;
-
-            document.getElementById('render-head-1').innerText = state.head1;
-            document.getElementById('render-head-2').innerText = state.head2;
-            document.getElementById('render-bubble-text').innerText = state.bubbleText;
-
-            document.getElementById('render-price-label').innerText = state.priceLabel;
-            document.getElementById('render-price-val').innerText = state.priceVal;
-            document.getElementById('render-price-unit').innerText = state.priceUnit;
-
-            document.getElementById('render-phone').innerText = state.phone;
-            document.getElementById('render-telegram').innerText = state.telegram;
-
-            // Render Floating Chips Layer
-            const floatingContainer = document.getElementById('floating-chips-container');
-            if (state.floatingChips) {
-                floatingContainer.innerHTML = `
-                    <div class="absolute top-12 left-4 w-8 h-4 bg-amber-300 border border-amber-600 rounded-full transform -rotate-45 opacity-60"></div>
-                    <div class="absolute top-24 right-5 w-10 h-5 bg-yellow-200 border border-amber-600 rounded-full transform rotate-30 opacity-70"></div>
-                    <div class="absolute bottom-20 left-6 w-7 h-3.5 bg-amber-400 border border-amber-700 rounded-full transform rotate-12 opacity-50"></div>
-                `;
-            } else {
-                floatingContainer.innerHTML = '';
-            }
-
-            // Render Sticker Badges
-            document.getElementById('sticker-badge-crispy').style.display = state.stickerCrispy ? 'flex' : 'none';
-            document.getElementById('sticker-badge-seasoning').style.display = state.stickerSeasoning ? 'flex' : 'none';
-            document.getElementById('sticker-badge-khmer').style.display = state.stickerKhmer ? 'flex' : 'none';
-
-            // Render Dual Split Mode vs Single SVG Mode
-            const dualView = document.getElementById('dual-split-view');
-            const singleView = document.getElementById('single-mode-view');
-
-            if (state.showDualSplit) {
-                dualView.classList.remove('hidden');
-                singleView.classList.add('hidden');
-
-                document.getElementById('render-dual-left-title').innerText = state.dualLeftTitle;
-                document.getElementById('render-dual-left-1').innerText = state.dualLeft1;
-                document.getElementById('render-dual-left-2').innerText = state.dualLeft2;
-                document.getElementById('render-dual-left-3').innerText = state.dualLeft3;
-                document.getElementById('render-dual-left-4').innerText = state.dualLeft4;
-                document.getElementById('render-dual-left-5').innerText = state.dualLeft5;
-
-                document.getElementById('render-dual-right-title').innerText = state.dualRightTitle;
-                document.getElementById('render-dual-right-1').innerText = state.dualRight1;
-                document.getElementById('render-dual-right-2').innerText = state.dualRight2;
-                document.getElementById('render-dual-right-3').innerText = state.dualRight3;
-                document.getElementById('render-dual-right-4').innerText = state.dualRight4;
-                document.getElementById('render-dual-right-5').innerText = state.dualRight5;
-
-                document.getElementById('left-column-svg-icon').innerHTML = productSVGs.smallDriedSVG;
-                document.getElementById('right-column-svg-icon').innerHTML = productSVGs.smallCrispySVG;
-            } else {
-                dualView.classList.add('hidden');
-                singleView.classList.remove('hidden');
-                const displayWrapper = document.getElementById('food-display-wrapper');
-                
-                if (state.uploadedImageSrc) {
-                    displayWrapper.innerHTML = `<img src="${state.uploadedImageSrc}" class="max-h-40 md:max-h-48 object-contain drop-shadow-2xl rounded-xl border-2 border-amber-400/40" alt="Product Photo" />`;
-                } else {
-                    displayWrapper.innerHTML = productSVGs[state.productIconKey] || productSVGs.crispyChips;
-                }
-            }
-
-            document.getElementById('badge-grab').style.display = state.showGrab ? 'inline-flex' : 'none';
-            document.getElementById('badge-foodpanda').style.display = state.showFoodpanda ? 'inline-flex' : 'none';
-            document.getElementById('badge-eget').style.display = state.showEget ? 'inline-flex' : 'none';
-
-            if (!document.getElementById('full-preview-modal').classList.contains('hidden')) {
-                syncModalValues();
-            }
-        }
-
-        function exportPosterHD() {
-            const canvas = document.getElementById('export-canvas');
-            const ctx = canvas.getContext('2d');
-
-            let width = 1080;
-            let height = 1080;
-
-            if (state.aspectRatio === '4:5') height = 1350;
-            if (state.aspectRatio === '9:16') height = 1920;
-
-            canvas.width = width;
-            canvas.height = height;
-
-            // Background Gradient
-            const grad = ctx.createLinearGradient(0, 0, 0, height);
-            grad.addColorStop(0, state.bgColor1);
-            grad.addColorStop(1, state.bgColor2);
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, width, height);
-
-            // Top Banner Brush Shape
-            ctx.fillStyle = '#facc15';
-            ctx.fillRect(40, 110, width - 80, 110);
-
-            // Headline 1 Text
-            ctx.font = `bold ${state.fontSize1 * 2}px "Moul", cursive`;
-            ctx.textAlign = 'center';
-
-            ctx.fillStyle = '#0f172a';
-            ctx.fillText(state.head1, width / 2, 185);
-
-            // Subhead
-            ctx.font = 'bold 30px "Battambang", sans-serif';
-            ctx.fillStyle = '#fef08a';
-            ctx.fillText(state.head2, width / 2, 260);
-
-            if (state.showDualSplit) {
-                // Left Box
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-                ctx.fillRect(60, 310, 460, 620);
-                ctx.strokeStyle = '#f59e0b';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(60, 310, 460, 620);
-
-                ctx.font = 'bold 30px "Battambang", sans-serif';
-                ctx.fillStyle = '#fef08a';
-                ctx.textAlign = 'center';
-                ctx.fillText(state.dualLeftTitle, 290, 360);
-
-                ctx.font = 'bold 24px "Kantumruy Pro", sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'left';
-                ctx.fillText(state.dualLeft1, 80, 440);
-                ctx.fillText(state.dualLeft2, 80, 520);
-                ctx.fillText(state.dualLeft3, 80, 600);
-                ctx.fillText(state.dualLeft4, 80, 680);
-                ctx.fillText(state.dualLeft5, 80, 760);
-
-                // Right Box
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-                ctx.fillRect(560, 310, 460, 620);
-                ctx.strokeStyle = '#ef4444';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(560, 310, 460, 620);
-
-                ctx.font = 'bold 30px "Battambang", sans-serif';
-                ctx.fillStyle = '#fef08a';
-                ctx.textAlign = 'center';
-                ctx.fillText(state.dualRightTitle, 790, 360);
-
-                ctx.font = 'bold 24px "Kantumruy Pro", sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'left';
-                ctx.fillText(state.dualRight1, 580, 440);
-                ctx.fillText(state.dualRight2, 580, 520);
-                ctx.fillText(state.dualRight3, 580, 680);
-                ctx.fillText(state.dualRight4, 580, 680);
-                ctx.fillText(state.dualRight5, 580, 760);
-            } else {
-                // Sticker Badges on Export Canvas
-                if (state.stickerCrispy) {
-                    ctx.fillStyle = '#facc15';
-                    ctx.fillRect(80, 320, 260, 50);
-                    ctx.font = 'bold 22px "Battambang", sans-serif';
-                    ctx.fillStyle = '#0f172a';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('⭐ 100% ស្រួយពិសេស', 210, 353);
-                }
-
-                if (state.stickerSeasoning) {
-                    ctx.fillStyle = '#dc2626';
-                    ctx.fillRect(80, 800, 240, 50);
-                    ctx.font = 'bold 22px "Battambang", sans-serif';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('🔥 ក្រឡុកគ្រឿងដិត', 200, 833);
-                }
-
-                if (state.stickerKhmer) {
-                    ctx.fillStyle = '#059669';
-                    ctx.fillRect(740, 320, 260, 50);
-                    ctx.font = 'bold 22px "Battambang", sans-serif';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('❤️ ផលិតផលកូនខ្មែរ', 870, 353);
-                }
-
-                // Price Tag Badge
-                ctx.fillStyle = '#d97706';
-                ctx.beginPath();
-                ctx.arc(900, 820, 90, 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.lineWidth = 4;
-                ctx.strokeStyle = '#fef08a';
-                ctx.stroke();
-
-                ctx.font = 'bold 20px "Koulen", cursive';
-                ctx.fillStyle = '#fef08a';
-                ctx.textAlign = 'center';
-                ctx.fillText(state.priceLabel, 900, 785);
-
-                ctx.font = 'bold 42px "Koulen", cursive';
-                ctx.fillStyle = '#ffffff';
-                ctx.fillText(state.priceVal, 900, 830);
-
-                ctx.font = 'bold 20px "Battambang", sans-serif';
-                ctx.fillStyle = '#fef08a';
-                ctx.fillText(state.priceUnit, 900, 865);
-            }
-
-            // Footer Info Bar
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(40, height - 120, width - 80, 80);
-
-            ctx.font = 'bold 24px "Kantumruy Pro", sans-serif';
-            ctx.fillStyle = '#facc15';
-            ctx.textAlign = 'left';
-            ctx.fillText(state.phone, 70, height - 72);
-
-            ctx.fillStyle = '#94a3b8';
-            ctx.textAlign = 'right';
-            ctx.fillText(state.telegram, width - 70, height - 72);
-
-            const link = document.createElement('a');
-            link.download = `Khmer-Crispy-Banana-Poster-${Date.now()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }
-    </script>
+    // Initialize
+    renderProducts();
+    document.getElementById('user-coins').innerText = userCoins;
+    if (lastCheckin === new Date().toDateString()) {
+      const btn = document.getElementById('checkin-btn');
+      btn.innerText = "បាន Check-in រួចរាល់ថ្ងៃនេះ!";
+      btn.disabled = true;
+    }
+  </script>
 </body>
 </html>
-```
